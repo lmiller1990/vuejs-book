@@ -93,7 +93,6 @@ Let's see another of a directive - `v-show`
 <div id="app>
   <input v-model="message" v-show="visible"/>
   <input v-model="visible" type="checkbox" />
-
   {{ message }}
 </div>
 ```
