@@ -110,6 +110,8 @@ new Vue({
 })
 ```
 
+Try clicking the checkbox - the `<input />` field should disappear! You can use `v-model` to bind to boolean values, with a checkbox, as well as to a string value like in the previous example. When the checkbox is unmarked and `visible` becomes false, the first `<input /> field reacts to the change in is automatically hidden. 
+
 
 
 
