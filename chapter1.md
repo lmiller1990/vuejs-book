@@ -86,7 +86,9 @@ Vue provides a number of build in _directives_ which you can use with regular HT
 
 The `message` variable updates in sync with the content of the `<input />` tag. Pretty neat! This is one of Vue's strongest points; easy, two way binding between the UI and data.
 
-Let's see another of a directive - `v-show`
+### 1.3 Now you see me, now you don't: v-show
+
+ `v-show`
 
 ```
 <!-- index.html -->
@@ -111,6 +113,8 @@ new Vue({
 ```
 
 Try clicking the checkbox - the `<input />` field should disappear! You can use `v-model` to bind to boolean values, with a checkbox, as well as to a string value like in the previous example. When the checkbox is unmarked and `visible` becomes false, the first `<input />` field reacts to the change in is automatically hidden. 
+
+
 
 
 
