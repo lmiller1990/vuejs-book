@@ -88,8 +88,6 @@ The `message` variable updates in sync with the content of the `<input />` tag. 
 
 ### 1.3 Now you see me, now you don't: v-show
 
- `v-show`
-
 ```
 <!-- index.html -->
 <div id="app>
