@@ -91,7 +91,9 @@ Let's see another of a directive - `v-show`
 ```
 <!-- index.html -->
 <div id="app>
-  <input v-model="message" />
+  <input v-model="message" v-show="visible == 'hide'/>
+  <input v-model="visible" />
+
   {{ message }}
 </div>
 ```
