@@ -74,12 +74,10 @@ Vue provides a number of build in _directives_ which you can use with regular HT
 
 ```
 <!-- index.html -->
-...
 <div id="app>
   <input v-model="message" />
   {{ message }}
 </div>
-...
 ```
 
 `index.js` stays the same. Try refreshing the page, and changing the value of the input field.
@@ -87,6 +85,16 @@ Vue provides a number of build in _directives_ which you can use with regular HT
 ![](/assets/import2.png)
 
 The `message` variable updates in sync with the content of the <input /> tag. Pretty neat! This is one of Vue's strongest points; easy, two way binding between the UI and data.
+
+Let's see another of a directive - `v-show`
+
+```
+<!-- index.html -->
+<div id="app>
+  <input v-model="message" />
+  {{ message }}
+</div>
+```
 
 
 
