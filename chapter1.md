@@ -1,6 +1,6 @@
 # Chapter 1: First look at Vue
 
-What is Vue.js?
+### 1.1 What is Vue.js? 
 
 Vue.js \(from here on, Vue\) is a JavaScript framework created by and mantained by Evan You in 2015. It is coined a 'progressive' framework - one that provides a small, yet solid core API, and can be expanded with modules as needed.
 
@@ -60,4 +60,30 @@ This means everything _is_ working correctly! Great. Modify `index.html` and add
 And refresh the page. You should see:
 
 ![](/assets/hello-vue.png)
+
+So... _what happened here?_
+
+In a Vue app, anything between {{ }} will be _interpolated_ - replaced with relevant variable, function result, or expression. 
+
+Line 4 of the app uses one of the most frequently used of Vue's core functions - the `data` function. `data` should always return an object, which can contain variables that will be made directly available to the Vue instance which is attached to the app div. We then use {{ }} tags to display the message!
+
+### 1.2 First look at a directive: v-model
+
+Vue provides a number of build in _directives_ which you can use with regular HTML \(or custom components, as explained later\) to achieve different results. Let's see one of the most common, `v-model` in action:
+
+```
+<!-- index.html -->
+...
+<div id="app>
+  <input v-model="message" />
+  {{ message }}
+</div>
+...
+```
+
+`index.js` stays the same. Try refreshing the page, and changing the value of the input field.
+
+![](/assets/import2.png)
+
+
 
