@@ -37,8 +37,17 @@ new Vue({
     }
   }
 })
-
 ```
+
+Now open `index.html` in a web browser and beyond.... nothing! However, to make sure everything is working okay, open the developer tools \(F12 on Windows; cmd + shift + c on macOS\) and you should see a message in the console that says:
+
+> You are running Vue in development mode.
+>
+> Make sure to turn on production mode when deploying for production.
+>
+> See more tips at https://vuejs.org/guide/deployment.html
+
+This means everything _is_ working correctly! Great. Modify 
 
 
 
