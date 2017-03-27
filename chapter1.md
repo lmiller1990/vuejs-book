@@ -88,6 +88,8 @@ The `message` variable updates in sync with the content of the `<input />` tag. 
 
 ### 1.3 Now you see me, now you don't: v-show
 
+`v-show` is another handy directive, that can be used to control the visibility of an element. Update using the following code: 
+
 ```
 <!-- index.html -->
 <div id="app>
@@ -111,6 +113,8 @@ new Vue({
 ```
 
 Try clicking the checkbox - the `<input />` field should disappear! You can use `v-model` to bind to boolean values, with a checkbox, as well as to a string value like in the previous example. When the checkbox is unmarked and `visible` becomes false, the first `<input />` field reacts to the change in is automatically hidden. 
+
+What is actually happening behind the scene when the element is hidden, is that the CSS is being set to `display: none;`. When `v-show` evaluates to false, the element is still rendered in the DOM, just not visible. You can verify this using your browser's developer tools and observing how the DOM changes when you toggle the checkbox.
 
 
 
