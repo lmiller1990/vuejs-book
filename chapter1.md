@@ -24,13 +24,21 @@ To get started, include Vue from a CDN, and create a simple HTML template to hos
   <script src="index.js"></script>
 </body>
 </html>
+```
 
+Notice `<div id="app"></div>` on line 9? Vue apps are mounted on single HTML tag - usually a div like this. Line 6 includes the Vue itself, and line 11 includes the script we will write our first application in, which is shown below:
+
+```
+new Vue({
+  el: '#app',
+  data () {
+    return {
+      message: 'Hello Vue.js!'
+    }
+  }
+})
 
 ```
 
-Notice `<div id="app"></div>` on line 8? Vue apps are mounted on single HTML tag - usually a div like this. Line 6 includes the Vue itself, and line 7 includes the script we will write our first application in, which is shown below:
 
-
-
- 
 
