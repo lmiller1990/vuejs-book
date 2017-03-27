@@ -20,7 +20,7 @@ To get started, include Vue from a CDN, and create a simple HTML template to hos
 </head>
 <body>
   <div id="app">
-  
+
   </div>
 
   <script src="index.js"></script>
@@ -53,9 +53,11 @@ This means everything _is_ working correctly! Great. Modify `index.html` and add
 
 ```
 <div id="app">
-
+  {{ message }}
 </div>
 ```
 
+And refresh the page. You should see:
 
+![](/assets/hello-vue.png)
 
