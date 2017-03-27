@@ -19,7 +19,9 @@ To get started, include Vue from a CDN, and create a simple HTML template to hos
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.js"></script>
 </head>
 <body>
-  <div id="app"></div>
+  <div id="app">
+  
+  </div>
 
   <script src="index.js"></script>
 </body>
@@ -45,9 +47,15 @@ Now open `index.html` in a web browser and beyond.... nothing! However, to make 
 >
 > Make sure to turn on production mode when deploying for production.
 >
-> See more tips at https://vuejs.org/guide/deployment.html
+> See more tips at [https://vuejs.org/guide/deployment.html](https://vuejs.org/guide/deployment.html)
 
-This means everything _is_ working correctly! Great. Modify 
+This means everything _is_ working correctly! Great. Modify `index.html` and add the following
+
+```
+<div id="app">
+
+</div>
+```
 
 
 
