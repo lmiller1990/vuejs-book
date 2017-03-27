@@ -86,6 +86,7 @@ Vue provides a number of build in _directives_ which you can use with regular HT
 
 ![](/assets/import2.png)
 
+The `message` variable updates in sync with the content of the <input /> tag. Pretty neat! This is one of Vue's strongest points; easy, two way binding between the UI and data.
 
 
 
