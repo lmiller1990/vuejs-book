@@ -97,6 +97,22 @@ Let's see another of a directive - `v-show`
 </div>
 ```
 
+```
+// index.js
+new Vue({
+  el: '#app',
+  data () {
+    return {
+      message: 'Hello Vue.js!',
+      visible: true
+    }
+  }
+})
+```
+
+
+
+
 
 
 
