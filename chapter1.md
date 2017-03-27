@@ -116,7 +116,48 @@ Try clicking the checkbox - the `<input />` field should disappear! You can use 
 
 What is actually happening behind the scene when the element is hidden, is that the CSS is being set to `display: none;`. When `v-show` evaluates to false, the element is still rendered in the DOM, just not visible. You can verify this using your browser's developer tools and observing how the DOM changes when you toggle the checkbox.
 
+### 1.4 Again and again: v-for
 
+Another heavily used directive is `v-for`, which is much like the for loop in most programming languages. But first we need an array of data to loop over! Update `index.js`.
+
+
+```
+// index.js
+  new Vue({
+    el: '#app',
+    data () {
+    return {
+      message: 'Hello Vue.js!',
+      visible: true,
+      names: ['Lachlan', 'Chinami', 'Johnny']
+    }
+  }
+})
+```
+
+Now we have some data to loop over. In regular JavaScript, it would be done something like this:
+
+```
+for (let n in names) {
+  console.log(names[n])
+}
+```
+
+Vue has something very similar. Update `index.html`.
+
+```
+<!-- index.html -->
+<div id="app>
+  <input v-model="message" v-show="visible"/>
+  <input v-model="visible" type="checkbox" />
+  {{ message }}
+  
+  <div v-for name in names>
+    {{ name }}
+  </div>
+</div>
+```
+Refreshing the page should display all the names under the `<input />` from the previous example.
 
 
 
