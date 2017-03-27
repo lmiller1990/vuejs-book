@@ -16,6 +16,7 @@ To get started, include Vue from a CDN, and create a simple HTML template to hos
 <head>
   <meta charset="UTF-8">
   <title></title>
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.js"></script>
 </head>
 <body>
