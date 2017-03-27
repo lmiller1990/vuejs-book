@@ -10,5 +10,27 @@ Let's get write into it. Each chapter will start by building a small applciation
 
 To get started, include Vue from a CDN, and create a simple HTML template to host the Vue app.
 
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.js"></script>
+</head>
+<body>
+  <div id="app"></div>
 
+  <script src="index.js"></script>
+</body>
+</html>
+
+
+```
+
+Notice `<div id="app"></div>` on line 8? Vue apps are mounted on single HTML tag - usually a div like this. Line 6 includes the Vue itself, and line 7 includes the script we will write our first application in, which is shown below:
+
+
+
+ 
 
