@@ -163,15 +163,50 @@ Refreshing the page should display all the names under the `<input />` from the 
 
 ### 1.5 Events: v-on
 
-Vue provides an API to react to various events, such as clicks, button presses, and so on: `v-on`. 
+Vue provides an API to react to various events, such as clicks, button presses, and so on: `v-on`. Let's see it action.
 
+```
+<!-- index.html -->
+<div id="app">
+  <input v-model="message" v-show="visible"/>
+  <input v-model="visible" type="checkbox" />
+  <button v-on:click="reverseNames">Reverse</button>
+  {{ message }}
 
+  <div v-for name in names>
+    {{ name }}
+  </div>
+</div>
+```
 
+`v-on` can be followed by a number of built in events, such as
 
+* click
+* mouseover
+* keyup
+* keydown
+* and many more
 
+You can also provide custom events, as we will see later. Using `v-on` also let's us introduce a new a new part of the Vue api: the `methods` object, which behaves much like the `data ()` object, but with functions.
 
-
-
+```
+// index.js
+new Vue({
+  el: '#app',
+  data () {
+    return {
+      message: 'Hello Vue.js!',
+      visible: true,
+      names: ['Lachlan', 'Chinami', 'Johnny']
+    }
+  }, 
+  methods: {
+    reverseNames () {
+      this.names.reverse()
+    }
+  }
+})
+```
 
 
 
