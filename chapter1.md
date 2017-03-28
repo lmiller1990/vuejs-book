@@ -86,7 +86,7 @@ Vue provides a number of build in _directives_ which you can use with regular HT
 
 The `message` variable updates in sync with the content of the `<input />` tag. Pretty neat! This is one of Vue's strongest points; easy, two way binding between the UI and data.
 
-### 1.3 Now you see me, now you don't: v-show
+### 1.3 Now you see me, now you don't: v-show and v-if
 
 `v-show` is another handy directive, that can be used to control the visibility of an element. Update using the following code: 
 
