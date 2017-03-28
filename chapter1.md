@@ -163,11 +163,7 @@ Refreshing the page should display all the names under the `<input />` from the 
 
 ### 1.5 Events: v-on
 
-Vue provides an API to react to various events, such as clicks, button presses, and so on: `v-on`.
-
-
-
-
+Vue provides an API to react to various events, such as clicks, button presses, and so on: `v-on`. 
 
 
 
