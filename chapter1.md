@@ -157,7 +157,7 @@ Vue has something very similar. Update `index.html`.
   </div>
 </div>
 ```
-Refreshing the page should display all the names under the `<input />` from the previous example.
+Refreshing the page should display all the names under the `<input />` from the previous example...
 
 
 
