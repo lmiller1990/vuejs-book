@@ -74,7 +74,7 @@ Vue provides a number of build in _directives_ which you can use with regular HT
 
 ```
 <!-- index.html -->
-<div id="app>
+<div id="app">
   <input v-model="message" />
   {{ message }}
 </div>
@@ -92,7 +92,7 @@ The `message` variable updates in sync with the content of the `<input />` tag. 
 
 ```
 <!-- index.html -->
-<div id="app>
+<div id="app">
   <input v-model="message" v-show="visible"/>
   <input v-model="visible" type="checkbox" />
   {{ message }}
@@ -153,7 +153,7 @@ Vue has something very similar. Update `index.html`.
   <input v-model="visible" type="checkbox" />
   {{ message }}
 
-  <div v-for name in names>
+  <div v-for="name in names">
     {{ name }}
   </div>
 </div>
@@ -173,7 +173,7 @@ Vue provides an API to react to various events, such as clicks, button presses, 
   <button v-on:click="reverseNames">Reverse</button>
   {{ message }}
 
-  <div v-for name in names>
+  <div v-for="name in names">
     {{ name }}
   </div>
 </div>
