@@ -1,6 +1,6 @@
 # Chapter 1: First look at Vue
 
-### 1.1 What is Vue.js? 
+### 1.1 What is Vue.js?
 
 Vue.js \(from here on, Vue\) is a JavaScript framework created by and mantained by Evan You in 2015. It is coined a 'progressive' framework - one that provides a small, yet solid core API, and can be expanded with modules as needed.
 
@@ -16,7 +16,7 @@ To get started, include Vue from a CDN, and create a simple HTML template to hos
 <head>
   <meta charset="UTF-8">
   <title></title>
-  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.js"></script>
 </head>
 <body>
@@ -64,7 +64,7 @@ And refresh the page. You should see:
 
 So... _what happened here?_
 
-In a Vue app, anything between `{{ }}` will be _interpolated_ - replaced with relevant variable, function result, or expression. 
+In a Vue app, anything between `{{ }}` will be _interpolated_ - replaced with relevant variable, function result, or expression.
 
 Line 4 of the app uses one of the most frequently used of Vue's core functions - the `data` function. `data` should always return an object, which can contain variables that will be made directly available to the Vue instance which is attached to the app div. We then use `{{ }}` tags to display the message!
 
@@ -88,7 +88,7 @@ The `message` variable updates in sync with the content of the `<input />` tag. 
 
 ### 1.3 Now you see me, now you don't: v-show and v-if
 
-`v-show` is another handy directive, that can be used to control the visibility of an element. Update using the following code: 
+`v-show` is another handy directive, that can be used to control the visibility of an element. Update using the following code:
 
 ```
 <!-- index.html -->
@@ -112,16 +112,15 @@ new Vue({
 })
 ```
 
-Try clicking the checkbox - the `<input />` field should disappear! You can use `v-model` to bind to boolean values, with a checkbox, as well as to a string value like in the previous example. When the checkbox is unmarked and `visible` becomes false, the first `<input />` field reacts to the change in is automatically hidden. 
+Try clicking the checkbox - the `<input />` field should disappear! You can use `v-model` to bind to boolean values, with a checkbox, as well as to a string value like in the previous example. When the checkbox is unmarked and `visible` becomes false, the first `<input />` field reacts to the change in is automatically hidden.
 
 What is actually happening behind the scene when the element is hidden, is that the CSS is being set to `display: none;`. When `v-show` evaluates to false, the element is still rendered in the DOM, just not visible. You can verify this using your browser's developer tools and observing how the DOM changes when you toggle the checkbox.
 
-`v-if` 
+`v-if`
 
 ### 1.4 Again and again: v-for
 
 Another heavily used directive is `v-for`, which is much like the for loop in most programming languages. But first we need an array of data to loop over! Update `index.js`.
-
 
 ```
 // index.js
@@ -153,16 +152,18 @@ Vue has something very similar. Update `index.html`.
   <input v-model="message" v-show="visible"/>
   <input v-model="visible" type="checkbox" />
   {{ message }}
-  
+
   <div v-for name in names>
     {{ name }}
   </div>
 </div>
 ```
+
 Refreshing the page should display all the names under the `<input />` from the previous example.
 
+### 1.5 Events: v-on
 
-
+Vue provides an API to react to various events, such as clicks, button presses, and so on.
 
 
 
