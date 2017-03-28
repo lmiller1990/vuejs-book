@@ -116,6 +116,8 @@ Try clicking the checkbox - the `<input />` field should disappear! You can use 
 
 What is actually happening behind the scene when the element is hidden, is that the CSS is being set to `display: none;`. When `v-show` evaluates to false, the element is still rendered in the DOM, just not visible. You can verify this using your browser's developer tools and observing how the DOM changes when you toggle the checkbox.
 
+`v-if` 
+
 ### 1.4 Again and again: v-for
 
 Another heavily used directive is `v-for`, which is much like the for loop in most programming languages. But first we need an array of data to loop over! Update `index.js`.
