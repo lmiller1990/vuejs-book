@@ -64,9 +64,9 @@ And refresh the page. You should see:
 
 So... _what happened here?_
 
-In a Vue app, anything between {{ }} will be _interpolated_ - replaced with relevant variable, function result, or expression. 
+In a Vue app, anything between `{{ }}` will be _interpolated_ - replaced with relevant variable, function result, or expression. 
 
-Line 4 of the app uses one of the most frequently used of Vue's core functions - the `data` function. `data` should always return an object, which can contain variables that will be made directly available to the Vue instance which is attached to the app div. We then use {{ }} tags to display the message!
+Line 4 of the app uses one of the most frequently used of Vue's core functions - the `data` function. `data` should always return an object, which can contain variables that will be made directly available to the Vue instance which is attached to the app div. We then use `{{ }}` tags to display the message!
 
 ### 1.2 First look at a directive: v-model
 
