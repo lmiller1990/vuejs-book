@@ -243,7 +243,39 @@ new Vue({
 
 From now on, only the contents of `<div id="app"></div>` will be shown brievity.
 
+The next code block adds:
 
+1. an input field, bound with `v-model` and `v-on`, for creating a new todo item
+2. a `data` object to hold a blank string for the item name, and an todos array
+3. a `methods` object, to house a method for adding a new todo item to the todos array
+
+```
+new Vue({
+  el: '#app',
+  data () {
+    return {
+      todo: '',
+      id: 0,
+      todos: []
+    }
+  },
+  methods: {
+    addTodo () {
+      this.todos.push({ id: this.id, title: this.todo })
+      this.todo = ''
+      this.id += 1
+    }
+  }
+})
+```
+
+```
+// index.js
+<div id="app">
+  <input v-model="todo" v-on:keydown.enter="addTodo" type="text" />
+  {{ todos }}
+</div>
+```
 
 
 
