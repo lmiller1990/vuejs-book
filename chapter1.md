@@ -278,5 +278,7 @@ new Vue({
 </div>
 ```
 
+This should all be familiar. One new thing is `v-on:keydown.enter.` This allows allows us to simply press enter, which calls the `addTodo` method and inserts a new entry to the `todos` array. Notice we also include an `id` when inserting the todo - this is useful for identifying an specific todo item. since there is nothing to stop two items having the same name.
+
 
 
