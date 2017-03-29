@@ -208,5 +208,42 @@ new Vue({
 })
 ```
 
+### 1.6: Bringing it all together: a todo app
+
+Armed with a few simple directives and a small part of the Vue api, we can now build our first application - a classic todo app. The app should:
+
+* Insert a new item
+* Mark an item as complete
+* Delete an item
+
+```
+new Vue({
+  el '#app'
+})
+```
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title></title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.js"></script>
+</head>
+<body>
+<div id="app">
+
+</div>
+
+<script src="index.js"></script>
+</body>
+</html>
+```
+
+From now on, only the contents of `<div id="app"></div>` will be shown brievity.
+
+
+
 
 
