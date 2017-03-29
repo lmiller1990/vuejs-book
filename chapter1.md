@@ -250,6 +250,7 @@ The next code block adds:
 3. a `methods` object, to house a method for adding a new todo item to the todos array
 
 ```
+// index.html
 new Vue({
   el: '#app',
   data () {
