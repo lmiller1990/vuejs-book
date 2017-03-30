@@ -346,7 +346,7 @@ The following array methods trigger updates in Vue:
 * `sort()`
 * `reverse()`
 
-The last thing to do is to draw a line through completed todos, which introduces a new topic: class binding! 
+The last thing to do is to draw a line through completed todos, which introduces a new topic: class binding!
 
 ### 1.7: Class binding
 
@@ -425,7 +425,7 @@ new Vue({
 })
 ```
 
+Note:
 
-
-
+`<div v-bind:class="todoStyle(todo.isDone)" v-for="todo in todos">` receives a function, `todoStyle()` and passes it the todo's `isDone` property.
 
