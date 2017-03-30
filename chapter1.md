@@ -429,3 +429,14 @@ Note:
 
 `<div v-bind:class="todoStyle(todo.isDone)" v-for="todo in todos">` receives a function, `todoStyle()` and passes it the todo's `isDone` property, which `return "completed"` if `isDone` is true. Because `isDone` is reactive, when the checkbox is clicked, the class is updated, as well as the style. Pretty neat.
 
+### 1.8 Keeping it concise: shorthand directives
+
+You may notice typing things like `v-bind:class` and `v-on:click` gets tiring and makes the code a little difficult to read. Thankfully, there is a better way.
+
+* `v-bind` can be dropped, leaving `:class="todoStyle(todo.isDone)"`
+* `v-on` can be replaced with `@`, leaving `@click="removeById(todo.id)"`
+
+Much cleaner! From now on, all code snippets will use the shorthand.
+
+
+
