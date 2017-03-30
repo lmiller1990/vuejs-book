@@ -280,3 +280,73 @@ new Vue({
 
 This should all be familiar. One new thing is `v-on:keydown.enter.` This allows allows us to simply press enter, which calls the `addTodo` method and inserts a new entry to the `todos` array. Notice we also include an `id` when inserting the todo, and a `isDone` variable. These are useful for identifying a todo item uniquely, and the completion functionality later on.
 
+Now you should be able to type some text in the input and press enter to add it to a list. 
+
+Next let's add the ability to delete and complete items, finishing the core functionality.
+
+```
+// index.js
+new Vue({
+  el: '#app',
+  data () {
+    return {
+      todo: '',
+      id: 0,
+      todos: []
+    }
+  },
+  methods: {
+    addTodo () {
+      this.todos.push({ id: this.id, title: this.todo, isDone: false })
+      this.todo = ''
+      this.id += 1
+    },
+    removeById (id) {
+      let ind = this.findIndexById(id)
+      this.todos.splice(ind, 1)
+    },
+    findIndexById (id) {
+      for (let t in this.todos) {
+        if (this.todos[t].id === id) {
+          return t
+        }
+      }
+      return -1
+    }
+  }
+})
+```
+
+```
+<!-- index.html -->
+<div id="app">
+  <input v-model="todo" v-on:keydown.enter="addTodo" type="text" />
+  {{ todos }}
+  <div v-for="todo in todos">
+    {{ todo.title }} <input type="checkbox" v-model="todo.isDone">
+    <button v-on:click="removeById(todo.id)">X</button>
+  </div>
+</div>
+```
+
+Only one extra line in `index.html`! Very concise. This listings adds two new methods, `findIndexById()`and `removeById()` . `findIndexById()` receives the index of the todo item and returns it's location in the `todos` array, and `removeById()` splices it out. The method is called in the same way the `addTodo()` method is called, using `v-on`. We also add a checkbox and bind it to the relevant todo's isDone property.
+
+One important thing to note is how an element is removed from an array in Vue, using the `Array.prototype.splice()` method. Due to JavaScript limitations, Vue cannot detect:
+
+1. Directly setting an item with an index, for example `todos[0] = newTodo` will not be observed, and data bindings will not update
+2. When modifying the length of an array, for example `todos.length = 3`
+
+The following array methods trigger updates in Vue:
+
+* `push()`
+* `pop()`
+* `shift()`
+* `unshift()`
+* `splice()`
+* `sort()`
+* `reverse()`
+
+
+
+
+
