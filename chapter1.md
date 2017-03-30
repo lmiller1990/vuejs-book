@@ -375,7 +375,7 @@ Now, any todo with with `class="completed"` will get a line through it. The fina
 <div id="app">
   <input v-model="todo" v-on:keydown.enter="addTodo" type="text" />
   {{ todos }}
-  <div :class="todoStyle(todo.isDone)" v-for="todo in todos">
+  <div v-bind:class="todoStyle(todo.isDone)" v-for="todo in todos">
     {{ todo.title }} <input type="checkbox" v-model="todo.isDone">
     <button v-on:click="removeById(todo.id)">X</button>
   </div>
@@ -427,5 +427,5 @@ new Vue({
 
 Note:
 
-`<div v-bind:class="todoStyle(todo.isDone)" v-for="todo in todos">` receives a function, `todoStyle()` and passes it the todo's `isDone` property.
+`<div v-bind:class="todoStyle(todo.isDone)" v-for="todo in todos">` receives a function, `todoStyle()` and passes it the todo's `isDone` property, which `return "completed"` if `isDone` is true. Because `isDone` is reactive, when the checkbox is clicked, the class is updated, as well as the style. Pretty neat.
 
