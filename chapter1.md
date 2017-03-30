@@ -280,7 +280,7 @@ new Vue({
 
 This should all be familiar. One new thing is `v-on:keydown.enter.` This allows allows us to simply press enter, which calls the `addTodo` method and inserts a new entry to the `todos` array. Notice we also include an `id` when inserting the todo, and a `isDone` variable. These are useful for identifying a todo item uniquely, and the completion functionality later on.
 
-Now you should be able to type some text in the input and press enter to add it to a list. 
+Now you should be able to type some text in the input and press enter to add it to a list.
 
 Next let's add the ability to delete and complete items, finishing the core functionality.
 
@@ -345,6 +345,85 @@ The following array methods trigger updates in Vue:
 * `splice()`
 * `sort()`
 * `reverse()`
+
+The last thing to do is to draw a line through completed todos, which introduces a new topic: class binding! 
+
+### 1.7: Class binding
+
+Using the `v-bind` directive, it is possible to bind a `class` or `style` property to a variable or method. Firstly, make a new file, called `index.css` and include in in `index.html` like this:
+
+```
+/* index.css */
+.completed {
+  text-decoration: line-through;
+}
+```
+
+Now, any todo with with `class="completed"` will get a line through it. The final application looks as follows:
+
+```
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title></title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <input v-model="todo" v-on:keydown.enter="addTodo" type="text" />
+  {{ todos }}
+  <div :class="todoStyle(todo.isDone)" v-for="todo in todos">
+    {{ todo.title }} <input type="checkbox" v-model="todo.isDone">
+    <button v-on:click="removeById(todo.id)">X</button>
+  </div>
+</div>
+
+<link href="index.css" rel="stylesheet" />
+<script src="index.js"></script>
+</body>
+</html>
+```
+
+```
+// index.js
+new Vue({
+  el: '#app',
+  data () {
+    return {
+      todo: '',
+      id: 0,
+      todos: []
+    }
+  },
+  methods: {
+    addTodo () {
+      this.todos.push({ id: this.id, title: this.todo, isDone: false })
+      this.todo = ''
+      this.id += 1
+    },
+    removeById (id) {
+      let ind = this.findIndexById(id)
+      this.todos.splice(ind, 1)
+    },
+    findIndexById (id) {
+      for (let t in this.todos) {
+        if (this.todos[t].id === id) {
+          return t
+        }
+      }
+      return -1
+    },
+    todoStyle (isDone) {
+      if (isDone) {
+        return "completed"
+      }
+    }
+  }
+})
+```
 
 
 
