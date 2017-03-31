@@ -8,9 +8,10 @@ This book assumes basic knowledge of HTML, CSS and JavaScript. If you have some 
 
 Let's get write into it. Each chapter will start by building a small applciation to demonstrate different features, and later build a clone of the popular programming news board, hacker news, complete with test driven development, and an NPM powered workflow.
 
-To get started, include Vue from a CDN, and create a simple HTML template to host the Vue app.
+To get started, include Vue from a CDN, and create a simple HTML called `index.html` template to host the Vue app.
 
 ```
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,9 +30,10 @@ To get started, include Vue from a CDN, and create a simple HTML template to hos
 </html>
 ```
 
-Notice `<div id="app"></div>` on line 9? Vue apps are mounted on single HTML tag - usually a div like this. Line 6 includes the Vue itself, and line 11 includes the script we will write our first application in, which is shown below:
+Notice `<div id="app"></div>` on line 9? Vue apps are mounted on single HTML tag - usually a div like this. Line 6 includes the Vue itself, and line 11 includes the script which you should create in the same directory as `index.html`, called `index.js`. Then insert the following code to `index.js`:
 
 ```
+// index.js
 new Vue({
   el: '#app',
   data () {
@@ -437,6 +439,4 @@ You may notice typing things like `v-bind:class` and `v-on:click` gets tiring an
 * `v-on` can be replaced with `@`, leaving `@click="removeById(todo.id)"`
 
 Much cleaner! From now on, all code snippets will use the shorthand.
-
-
 
