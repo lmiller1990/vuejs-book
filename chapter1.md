@@ -68,7 +68,7 @@ In a Vue app, anything between `{{ }}` will be _interpolated_ - replaced with re
 
 Line 4 of the app uses one of the most frequently used of Vue's core functions - the `data` function. `data` should always return an object, which can contain variables that will be made directly available to the Vue instance which is attached to the app div. We then use `{{ }}` tags to display the message!
 
-### 1.2 First look at a directive: v-model
+### 1.2 First look at directives: v-model
 
 Vue provides a number of build in _directives_ which you can use with regular HTML \(or custom components, as explained later\) to achieve different results. Let's see one of the most common, `v-model` in action:
 
@@ -437,6 +437,4 @@ You may notice typing things like `v-bind:class` and `v-on:click` gets tiring an
 * `v-on` can be replaced with `@`, leaving `@click="removeById(todo.id)"`
 
 Much cleaner! From now on, all code snippets will use the shorthand.
-
-
 
