@@ -2,7 +2,7 @@
 
 #### 2.1 Introduction to components
 
-Vue allows applications to be composed in small, modular parts, called \_components. \_A component is basically a Vue instance with some predefined methods, data, and so on. As in the previous chapter, start with this basic template:
+Vue allows applications to be composed in small, modular parts, called _components. _A component is basically a Vue instance with some predefined methods, data, and so on. As in the previous chapter, start with this basic template:
 
 ```
 <!-- index.html -->
@@ -36,7 +36,5 @@ Declaring a component is easy! A basic component looks like this:
       template: `<div></div>`
     })
 
-Which can then be used like a 
-
-
+Which can then be used like a
 
