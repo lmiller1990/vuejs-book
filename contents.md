@@ -16,9 +16,15 @@
 
 #### 1.8 Keeping it concise: shorthand directives
 
+
+
+### 2. Vue Components and Webpack
+
+#### 2.1 Why components?
+
+#### 2.2 
+
 ### 
-
-
 
 
 

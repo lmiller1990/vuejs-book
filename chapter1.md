@@ -438,3 +438,7 @@ You may notice typing things like `v-bind:class` and `v-on:click` gets tiring an
 
 Much cleaner! From now on, all code snippets will use the shorthand.
 
+ 
+
+
+
