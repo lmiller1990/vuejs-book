@@ -10,7 +10,7 @@ Vue allows applications to be composed in small, modular parts, called \_compone
 </div>
 ```
 
-Componenets can use all the usual directives, and be extended in other ways, receive arguments \(called _props_\) which we will see soon. 
+Componenets can use all the usual directives, and be extended in other ways, receive arguments \(called _props_\) which we will see soon.
 
 Declaring a component is easy! A basic component looks like this:
 
@@ -100,5 +100,42 @@ Now update `index.html` \(only the content inside the body tags is shown below\)
 </div>
 ```
 
-And open `index.html` in a web browser. You should have two greetings, one from the main Vue instance, and one from the component.
+And open `index.html` in a web browser. You should have two greetings, one from the main Vue instance, and one from the component!
+
+#### 2.2 Sharing data between components
+
+It is possible to pass data from a parent instance to a child component using `props` \(_properties\)._  All you need to do is:
+
+1. Bind the value to the component using a colon `:`
+2. Tell the component what data it should expect to receive.
+
+Briefly put:
+
+```
+/* some vue instance */
+new Vue({
+  data () { 
+    return {
+      message: 'Hi'
+    }
+  }
+}
+
+/* markup (component declaration in next code snippet) */ 
+<MyComponent :my-message="message"></MyComponent>
+```
+
+The above hypothetical component is passed a variable `message`, and expects to receive it as the prop `my-message`. The declaration for the component would looks as follows:
+
+```
+Vue.component('MyComponent', {
+  props: [myMessage]
+})
+```
+
+Now MyComponent has access to the data passed down from the main Vue instance! Notice when passing the prop, _kebab case_ is used: `:my-message`, however when the prop is declared in the component, camelCase is used: `myMessage`. Not doing this will cause Vue to throw a warning \(this is a recent change\). The reason is because HTML is case insensitive, so passing a prop like this: `:myMessage="message"` doesn't mean as much, so kebab case is used instead.
+
+
+
+
 
