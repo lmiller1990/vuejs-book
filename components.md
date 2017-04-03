@@ -135,7 +135,43 @@ Vue.component('MyComponent', {
 
 Now MyComponent has access to the data passed down from the main Vue instance! Notice when passing the prop, _kebab case_ is used: `:my-message`, however when the prop is declared in the component, camelCase is used: `myMessage`. Not doing this will cause Vue to throw a warning \(this is a recent change\). The reason is because HTML is case insensitive, so passing a prop like this: `:myMessage="message"` doesn't mean as much, so kebab case is used instead.
 
+Sharing data using props is a bit confusing at first, so here is the current application code with an updated example:
 
+```
+<!-- index.html -->
+<div id="app">
+    {{ msg }}
+    <Hello></Hello>
+    <Todo :msg-to-pass="msgToPass"></Todo>
+</div>
+```
+
+    // index.js
+    Vue.component('Hello', {
+      template: `<div>{{ msg }}</div>`,
+      data () {
+        return {
+          msg: 'Hello from a component!'
+        }
+      }
+    })
+
+    Vue.component('Todo', {
+      props: ['msgToPass'],
+      template: `<div>{{ msgToPass }}</div>`
+    })
+
+    new Vue({
+      el: '#app',
+      data () {
+        return {
+          msg: 'Hello from Vue.js!',
+          msgToPass: 'A message passed from the main app to a component!'
+        }
+      }
+    })
+
+Now we have two components: `Todo` and `Hello`. `Todo` receives `msgToPass` from the main instance, and renders is using curly braces. 
 
 
 
