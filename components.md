@@ -261,3 +261,9 @@ Below is a full working example of the simplified example above \(create a fresh
 
 Remember that `@` is shorthand for `v-on`. It's only a few lines of code, but a lot happens - if you don't understand what's going on at first, try playing around with the code until you do - it's important to have a solid understand of how components communicate. To see this app in action, open `index.html` in your browser and also open the browser developer tools, and note the console output when clicking the button.
 
+#### 2.4 Improved Todo app with components
+
+Armed with our new knowledge of components, we can make a much more modular version of the todo app from the previous chapter.
+
+
+
