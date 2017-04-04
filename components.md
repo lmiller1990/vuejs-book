@@ -263,7 +263,7 @@ Remember that `@` is shorthand for `v-on`. It's only a few lines of code, but a 
 
 #### 2.4 Improved Todo app with components
 
-Armed with our new knowledge of components, we can make a much more modular version of the todo app from the previous chapter.
+Armed with our new knowledge of components, we can make a much more modular version of the todo app from the previous chapter. I'll present the full code below first, and follow with an explanation - however everything used in the application has been covered in the previous two chapters!
 
 
 
