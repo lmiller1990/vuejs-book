@@ -102,7 +102,7 @@ Now update `index.html` \(only the content inside the body tags is shown below\)
 
 And open `index.html` in a web browser. You should have two greetings, one from the main Vue instance, and one from the component!
 
-#### 2.2 Sharing data between components
+#### 2.2 Parsing data from parent to child component
 
 It is possible to pass data from a parent instance to a child component using `props` \(_properties\)._  All you need to do is:
 
@@ -112,7 +112,7 @@ It is possible to pass data from a parent instance to a child component using `p
 Briefly put:
 
 ```
-/* some vue instance */
+/* some parent vue instance */
 new Vue({
   data () { 
     return {
@@ -121,7 +121,7 @@ new Vue({
   }
 }
 
-/* markup (component declaration in next code snippet) */ 
+/* markup for some hypothetical child component (component declaration in next code snippet) */ 
 <MyComponent :my-message="message"></MyComponent>
 ```
 
@@ -171,7 +171,7 @@ Sharing data using props is a bit confusing at first, so here is the current app
       }
     })
 
-Now we have two components: `Todo` and `Hello`. `Todo` receives `msgToPass` from the main instance, and renders is using curly braces. 
+Now we have two components: `Todo` and `Hello`. `Todo` receives `msgToPass` from the main instance, and renders is using curly braces.
 
 
 
