@@ -289,7 +289,10 @@ Armed with our new knowledge of components, we can make a much more modular vers
     // index.js
     Vue.component('Todo', {
       props: ['todo'],
-      template: `<div>{{ todo.title }}</div>`
+      template: `
+      <div>
+        {{ todo.title }}
+      </div>`
     })
 
     new Vue({
@@ -308,4 +311,31 @@ Armed with our new knowledge of components, we can make a much more modular vers
 Short and concise. Notice the `todos` array is looped over using `v-for`, as as the loop executes, the current `todo` is passed as a prop to the Todo component. This is a common pattern, not only in Vue but Angular, React, and other front end frameworks, and one you will be using a lot - so make sure you understand what's happening.
 
 Now we should add the ability to mark a todo as complete.
+
+    // index.js
+    Vue.component('Todo', {
+      props: ['todo'],
+      template: `
+      <div :style="todoStyle">
+        {{ todo.title }}
+        <input v-model="todo.isDone" type="checkbox" />
+      </div>`,
+      computed: {
+        todoStyle () {
+          if (this.todo.isDone) {
+            return { 'text-decoration': 'line-through' }
+          }
+        }
+      }
+    })
+
+    new Vue({ 
+      // no changes here
+    })
+
+`index.html` remains the same. As previously, `v-model` is used to bind the checkbox value to `todo.isDone`. 
+
+There is a new part of the Vue api exposed here though - _computed properties_. Inside the `computed` object, methods can be defined - with one restriction - no arguments. Whenever a value a computed property changes, the computed property will update automatically. In this case, when `todo.isDone` changes, the computed property goes from returning nothing to returning `{ 'text-decoration': 'line-through' }`, and updating the style of the todo. 
+
+We used a method to do something similar in the previous example. The reason we used a method was because in the previous example, we passed a paramter - the id of the todo - because we didn't have any components in that example, so we had to have other way to identify which `todo` should have the linethrough style applied. Now each todo has it's own component, that is no longer necessary. 
 
