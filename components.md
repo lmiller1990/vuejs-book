@@ -300,9 +300,9 @@ Armed with our new knowledge of components, we can make a much more modular vers
       data () {
         return {
           todos: [
-            { title: 'Learn Vue.js', isDone: false },
-            { title: 'Write some tests', isDone: false },
-            { title: 'Take a break', isDone: false }
+            { id: 0, title: 'Learn Vue.js', isDone: false },
+            { id: 1, title: 'Write some tests', isDone: false },
+            { id: 2, title: 'Take a break', isDone: false }
           ]
         }
       }
@@ -333,9 +333,89 @@ Now we should add the ability to mark a todo as complete.
       // no changes here
     })
 
-`index.html` remains the same. As previously, `v-model` is used to bind the checkbox value to `todo.isDone`. 
+`index.html` remains the same. As previously, `v-model` is used to bind the checkbox value to `todo.isDone`.
 
-There is a new part of the Vue api exposed here though - _computed properties_. Inside the `computed` object, methods can be defined - with one restriction - no arguments. Whenever a value a computed property changes, the computed property will update automatically. In this case, when `todo.isDone` changes, the computed property goes from returning nothing to returning `{ 'text-decoration': 'line-through' }`, and updating the style of the todo. 
+There is a new part of the Vue api exposed here though - _computed properties_. Inside the `computed` object, methods can be defined - with one restriction - no arguments. Whenever a value a computed property changes, the computed property will update automatically. In this case, when `todo.isDone` changes, the computed property goes from returning nothing to returning `{ 'text-decoration': 'line-through' }`, and updating the style of the todo.
 
-We used a method to do something similar in the previous example. The reason we used a method was because in the previous example, we passed a paramter - the id of the todo - because we didn't have any components in that example, so we had to have other way to identify which `todo` should have the linethrough style applied. Now each todo has it's own component, that is no longer necessary. 
+We used a method to do something similar in the previous example. The reason we used a method was because in the previous example, we passed a paramter - the id of the todo - because we didn't have any components in that example, so we had to have other way to identify which `todo` should have the linethrough style applied. Now each todo has it's own component, that is no longer necessary.
+
+Lastly, deleting a todo! The strategy is as follows:
+
+1. Create an \[X\] button, that calls a function `deleteTodo` 
+2. `deleteTodo` should `$emit` a `delete` event, with the id of the todo to delete
+3. listen for the `delete` event using `v-on` \(or the shorthand `@`\) and call a function on the Vue instance, that will splice the todo from the `todos` array
+
+Steps 1 and 2 are implemented in the `Todo` component, and the markup in `index.html`:
+
+    // index.js
+    Vue.component('Todo', {
+      props: ['todo'],
+      template: `
+      <div :style="todoStyle">
+        {{ todo.title }}
+        <input v-model="todo.isDone" type="checkbox" />
+        <button @click="deleteTodo">X</button>
+      </div>`,
+      computed: {
+        todoStyle () {
+          if (this.todo.isDone) {
+            return { 'text-decoration': 'line-through' }
+          }
+        }
+      },
+      methods: {
+        deleteTodo () {
+          this.$emit('delete', this.todo.id)
+        }
+      }
+    })
+
+    new Vue({ 
+      // no changes here
+    })
+
+When the button is clicked, `deleteTodo` will emit a `delete` event, and the id of the todo. Next, we need to listen for the `delete` event:
+
+```
+<!-- index.html -->
+<div id="app">
+  <Todo v-for="todo in todos" :todo="todo" @delete="deleteTodo">
+  </Todo>
+</div>
+```
+
+The above snippet responds to the emitted `delete` event by calling a `deleteTodo` method on the main instance, which we will now define:
+
+```
+// index.js
+Vue.component('Todo', {
+  // see previous snippet, no changes here
+})
+
+new Vue({
+  el: '#app',
+  data () {
+    return {
+      todos: [
+        { id: 0, title: 'Learn Vue.js', isDone: true },
+        { id: 1, title: 'Write some tests', isDone: false },
+        { id: 2, title: 'Take a break', isDone: false }
+      ]
+    }
+  },
+  methods: {
+    deleteTodo (id) {
+      for (let i in this.todos) {
+        if (this.todos[i].id === id) {
+          this.todos.splice(i, 1)
+        }
+      }
+    }
+  }
+})
+```
+
+Simply loop though the `todos` array, and remove the todo with the matching id. Now we have the same application as built in the previous chapter, but split across two components, which makes developing and maintaining an application much easier, especially which your applications start to get large.
+
+
 
