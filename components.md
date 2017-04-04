@@ -263,7 +263,45 @@ Remember that `@` is shorthand for `v-on`. It's only a few lines of code, but a 
 
 #### 2.4 Improved Todo app with components
 
-Armed with our new knowledge of components, we can make a much more modular version of the todo app from the previous chapter. I'll present the full code below first, and follow with an explanation - however everything used in the application has been covered in the previous two chapters!
+Armed with our new knowledge of components, we can make a much more modular version of the todo app from the previous chapter. Start with a fresh `index.html` and `index.js` as usual. To get going, we will render a list of todos, using `v-for` on our custom component.
+
+```
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.js"></script>
+
+  <title></title>
+</head>
+<body>
+  <div id="app">
+    <Todo v-for="todo in todos" :todo="todo">
+    </Todo>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>
+```
+
+    // index.js
+    Vue.component('Todo', {
+      props: ['todo'],
+      template: `<div>{{ todo }}</div>`
+    })
+
+    new Vue({
+      el: '#app',
+      data () {
+        return {
+          todos: ['Learn Vue.js', 'Write some tests', 'Take a break']
+        }
+      }
+    })
+
+Short and concise. Notice the `todos` array is looped over using `v-for`, as as the loop executes, the current `todo` is passed as a prop to the Todo component. This is a common pattern, not only in Vue but Angular, React, and other front end frameworks, and one you will be using a lot - so make sure you understand what's happening.
 
 
 
