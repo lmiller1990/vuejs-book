@@ -102,7 +102,7 @@ Now update `index.html` \(only the content inside the body tags is shown below\)
 
 And open `index.html` in a web browser. You should have two greetings, one from the main Vue instance, and one from the component!
 
-#### 2.2 Parsing data from parent to child component
+#### 2.2 Be fair and share: passing data from parent to child component
 
 It is possible to pass data from a parent instance to a child component using `props` \(_properties\)._  All you need to do is:
 
@@ -172,6 +172,38 @@ Sharing data using props is a bit confusing at first, so here is the current app
     })
 
 Now we have two components: `Todo` and `Hello`. `Todo` receives `msgToPass` from the main instance, and renders is using curly braces.
+
+#### 2.3 Listen to me! Emitting data from a child to a parent component
+
+The previous section shows how to pass data from a parent to a child; what about the other way around? To do this, use the `$emit` function, part of the core Vue api. All Vue instances can emit am event with a message and some data, and anyone listening can receive it in the same way we normally listen to events: `v-on:event`. Briefly:
+
+```
+<!-- child component who is emitting a message with some data -->
+Vue.component('Child', {
+  methods: {
+    cry () {
+      this.$emit('wahwah', 'I am sad')
+    }
+  }
+})
+
+<!-- markup for child in a parent instance -->
+<Child v-on:wahwah="haveSympathy"></Child>
+
+new Vue({
+  methods: {
+    haveSympathy (msg) {
+      console.log(msg) // We have access to the "I am sad" message here
+    }
+  } 
+})
+```
+
+This is a bit confusing at first. Firstly, notice that the `$emit` method has a `$` in front of it? All the Vue methods are prepended with `$` by convention - it makes it easy to differentiate between a method defined in a specific component, and a globally available method that is part of Vue's api.
+
+
+
+
 
 
 
