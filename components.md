@@ -289,19 +289,23 @@ Armed with our new knowledge of components, we can make a much more modular vers
     // index.js
     Vue.component('Todo', {
       props: ['todo'],
-      template: `<div>{{ todo }}</div>`
+      template: `<div>{{ todo.title }}</div>`
     })
 
     new Vue({
       el: '#app',
       data () {
         return {
-          todos: ['Learn Vue.js', 'Write some tests', 'Take a break']
+          todos: [
+            { title: 'Learn Vue.js', isDone: false },
+            { title: 'Write some tests', isDone: false },
+            { title: 'Take a break', isDone: false }
+          ]
         }
       }
     })
 
 Short and concise. Notice the `todos` array is looped over using `v-for`, as as the loop executes, the current `todo` is passed as a prop to the Todo component. This is a common pattern, not only in Vue but Angular, React, and other front end frameworks, and one you will be using a lot - so make sure you understand what's happening.
 
-
+Now we should add the ability to mark a todo as complete.
 
