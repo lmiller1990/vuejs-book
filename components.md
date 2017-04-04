@@ -201,9 +201,63 @@ new Vue({
 
 This is a bit confusing at first. Firstly, notice that the `$emit` method has a `$` in front of it? All the Vue methods are prepended with `$` by convention - it makes it easy to differentiate between a method defined in a specific component, and a globally available method that is part of Vue's api.
 
+Next, there are two arguments to the `$emit` method: the first is the event that will be emitted, and the second is a _payload_ - basically, some data that will also be emitted. It can be anything - often you will find yourself emitting an object, like this:
 
+```
+this.$emit('emitting', { name: 'Taro', age: 16 })
+```
 
+Next, to listen for the event, you simply use `v-on` to listen, in the same way you would respond to a keypress, mouse click, and so on. In the previous example:
 
+```
+v-on:wahwah="haveSympathy"
+```
 
+Will call the method `haveSympathy` whenever `wahwah` is emitted by the child component. Normally you will call a method in response to an event, but you could do something like set a variable value `v-on:wahwah="msg = 'stop crying'"`, or anything else. Notice that when listening to the event `v-on:wahwah="haveSympathy"` we do not need to append brackets to the method we are calling, or care about the arguments. However, we do need to declare them in the method definition, to be able to access them: `haveSympathy (msg)`. A little bit of Vue magic, which seems a bit counter intuitive at first - we will see in more depth how this works, later on.
 
+Below is a full working example of the simplified example above \(create a fresh `index.js` and `index.html`:
+
+    // index.js```
+    Vue.component('Child', {
+      template: `
+      <div>
+        <button @click="cry">Cry</button>
+      </div>`,
+      methods: {
+        cry () {
+          this.$emit('wahwah', 'I am sad')
+        }
+      }
+    })
+
+    new Vue({
+      el: '#app',
+      methods: {
+        haveSympathy (msg) {
+          console.log('Stop crying and smile :)')
+        }
+      }
+    })
+
+```
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.js"></script>
+
+  <title></title>
+</head>
+<body>
+  <div id="app">
+    <Child @wahwah="haveSympathy"></Child>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>
+```
+
+Remember that `@` is shorthand for `v-on`. It's only a few lines of code, but a lot happens - if you don't understand what's going on at first, try playing around with the code until you do - it's important to have a solid understand of how components communicate. To see this app in action, open `index.html` in your browser and also open the browser developer tools, and note the console output when clicking the button.
 
