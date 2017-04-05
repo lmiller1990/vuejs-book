@@ -417,7 +417,18 @@ new Vue({
 
 Simply loop though the `todos` array, and remove the todo with the matching id. Now we have the same application as built in the previous chapter, but split across two components, which makes developing and maintaining an application much easier, especially which your applications start to get large.
 
+If you have had the console open, you may have noticed the following error message:
+
+> \[Vue tip\] &lt;todo v-for="todo in todos"&gt;: component lists rendered with v-for should have explicit keys. See https://vuejs.org/guide/list.html\#key for more information.
+
+The link to the official documentation explains it well - by providing a key, Vue can track each node in the DOM better. Something unique is an ideal candidate for a key - such as the id of each todo. Update the for loop as follows to finish this chapter's application.
+
+```
+<div id="app">
+  <Todo v-for="todo in todos" :todo="todo" :key="todo.id" @delete="deleteTodo">
+  </Todo>
+</div>
+```
 
 
-//mention about key?
 
