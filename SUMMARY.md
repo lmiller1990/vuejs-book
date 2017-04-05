@@ -4,4 +4,5 @@
 * [Introduction](README.md)
 * [Chapter 1: First look at Vue](chapter1.md)
 * [Chapter 2: Vue Components](components.md)
+* [Chapter 3: A modern workflow with webpack](chapter-3-a-modern-workflow-with-webpack.md)
 
