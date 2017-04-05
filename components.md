@@ -419,7 +419,7 @@ Simply loop though the `todos` array, and remove the todo with the matching id. 
 
 If you have had the console open, you may have noticed the following error message:
 
-> \[Vue tip\] &lt;todo v-for="todo in todos"&gt;: component lists rendered with v-for should have explicit keys. See https://vuejs.org/guide/list.html\#key for more information.
+> \[Vue tip\] &lt;todo v-for="todo in todos"&gt;: component lists rendered with v-for should have explicit keys. See [https://vuejs.org/guide/list.html\#key](https://vuejs.org/guide/list.html#key) for more information.
 
 The link to the official documentation explains it well - by providing a key, Vue can track each node in the DOM better. Something unique is an ideal candidate for a key - such as the id of each todo. Update the for loop as follows to finish this chapter's application.
 

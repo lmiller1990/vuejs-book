@@ -2,6 +2,6 @@
 
 * [Contents](contents.md)
 * [Introduction](README.md)
-* [First Chapter](chapter1.md)
-* [Components](components.md)
+* [Chapter 1: First look at Vue](chapter1.md)
+* [Chapter 2: Vue Components](components.md)
 
