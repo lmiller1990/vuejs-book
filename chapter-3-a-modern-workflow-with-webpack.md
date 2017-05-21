@@ -75,11 +75,48 @@ So if someone else was to run `yarn install`, the required packages would be ins
 
 #### 3.4 Bundle it up: Webpack
 
-_Webpack_ is a tool to build your Javascript applications. Modern Javascript projects consist of many modules, which have to be included in the correct order to operate correctly. Webpack does all this, and more, for us. By setting up webpack, with a single command, we can compile our entire application, including all the components, and modules, into a single .js file, which is then included in our HTML. 
+_Webpack_ is a tool to build your Javascript applications. Modern Javascript projects consist of many modules, which have to be included in the correct order to operate correctly. Webpack does all this, and more, for us. By setting up webpack, with a single command, we can compile our entire application, including all the components, and modules, into a single .js file, which is then included in our HTML.
 
 First, add webpack using yarn:
 
-`yarn add webpack`
+`yarn add webpack `
+
+Great! We need to also create the file that webpack will write our bundled application too. In the root directory, create `bundle.js` by hand or by running `touch bundle.js`.
+
+Webpack uses a different system for requiring modules - the ideas are the same, however where Node uses `require`, webpack uses `import`. Modify `index.js` as follows:
+
+```
+import greeting from 'greeting'
+
+const sayHi = (message) => {
+  let el = document.createElement('div')
+  el.innerHTML = messagae
+  return el
+}
+
+document.body.appendChild(sayHi(greeting.random())
+```
+
+`sayHi` creates a div with a random greeting, which is appended to the body of the webpage. Go ahead and make the webpage called `index.html` and insert the following:
+
+```
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
+  </head>
+  <body>
+    <script src="bundle.js"></script>
+  </body>
+</html>
+```
+
+To compile the application, run `webpack index.js bundle.js`. Opening `index.html` in your browser should show a random greeting, that changes every time you refresh! Take a look in `bundle.js`, and you will see not only the `sayHi` function, but the source for the greeting module as well.
+
+Webpack does a _lot_ of things. This is a simple example, and to save time and effort, the projects from now on will use premade webpack templates from the Vue community, that include all the modules required, a test setup, and more.
+
+
 
 
 
