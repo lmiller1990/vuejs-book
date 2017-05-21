@@ -73,9 +73,13 @@ Notice `package.json` now looks like this:
 
 So if someone else was to run `yarn install`, the required packages would be installed, based on the `package.json` file.
 
+#### 3.4 Bundle it up: Webpack
 
+_Webpack_ is a tool to build your Javascript applications. Modern Javascript projects consist of many modules, which have to be included in the correct order to operate correctly. Webpack does all this, and more, for us. By setting up webpack, with a single command, we can compile our entire application, including all the components, and modules, into a single .js file, which is then included in our HTML. 
 
+First, add webpack using yarn:
 
+`yarn add webpack`
 
 
 
