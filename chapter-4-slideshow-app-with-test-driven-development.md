@@ -311,13 +311,52 @@ Not too useful. However, using a few directives, we can do a lot. But first, we 
 
 ### 4.3: Unidirectional flow, and the single source of truth
 
-Managing data for a complex single page application can get very difficult, very fast. The solution eventually arrived on to handle this is the _flux _pattern, popularized by Facebook. In flux, your application has a _store_ - literally, a huge Javascript object that stores all the data your application needs. All the components go to the store for data, so the store is known as the "single source of truth" - the only place data is stored. There is a little more to flux that will be introduced later using Vue's very own _vuex_ module, a flux implementation with deep integration with Vue, but for now the important thing to know is we should store all the data in a single location, and pass bits and pieces to components. Since Vue is reactive, whenever something changes in the store \(in the pointpoint app, an object contained in a top level `data` function\) the changes will be automatically reflected in all the other components.
+Managing data for a complex single page application can get very difficult, very fast. The solution eventually arrived on to handle this is the _flux \_pattern, popularized by Facebook. In flux, your application has a \_store_ - literally, a huge Javascript object that stores all the data your application needs. All the components go to the store for data, so the store is known as the "single source of truth" - the only place data is stored. There is a little more to flux that will be introduced later using Vue's very own _vuex_ module, a flux implementation with deep integration with Vue, but for now the important thing to know is we should store all the data in a single location, and pass bits and pieces to components. Since Vue is reactive, whenever something changes in the store \(in the pointpoint app, an object contained in a top level `data` function\) the changes will be automatically reflected in all the other components.
 
 ### 4.4: Creating the Store
 
 We will create our store object in `Hello`, since it is the top level component in our application. Update `Hello.vue` as shown below:
 
+Hello.vue
 
+```
+<template>
+  <div class="hello">
+    <SlideThumbnailContainer />
+    <MainSlide />
+  </div>
+</template>
+
+<script>
+import SlideThumbnailContainer from '@/components/SlideThumbnailContainer'
+import MainSlide from '@/components/MainSlide'
+export default {
+  name: 'hello',
+  components: {
+    SlideThumbnailContainer,
+    MainSlide
+  },
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js App',
+      store: {
+        slides: [
+          { id: 0, title: 'Demo', content: 'This is a demo slide' },
+          { id: 1, title: 'Vue', content: 'Flux is a great way to manage your app' }
+        ]
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+.hello {
+  display: flex;
+  justify-content: stretch;
+}
+</style>    
+```
 
 
 
