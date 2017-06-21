@@ -181,14 +181,14 @@ Note I have removed the default styling.
 
 If you are still running `npm run dev` in a terminal window from before, the page should automatically update and display "Slides" on the screen \(or an error overlay from the linting\). Webpack hot reload is not perfect, so you might need to refresh the page. If you stopped the terminal from earlier, run `npm run dev` again.
 
-Next, onto the thumbnails. Repeat the same procedure above: make a file called `SlideThumbnail.vue` inside `components`, put the default template in, but this time import `SlideThumbnail` inside of `SlideThumbnailContainer`, not `Hello`. And then do it again, for a component called `MainSlide`, which _will _be rendered inside of `Hello`. The current code for all the components \(total of four\), is below.
+Next, onto the thumbnails. Repeat the same procedure above: make a file called `SlideThumbnail.vue` inside `components`, put the default template in, but this time import `SlideThumbnail` inside of `SlideThumbnailContainer`, not `Hello`. And then do it again, for a component called `MainSlide`, which \_will \_be rendered inside of `Hello`. The current code for all the components \(total of four\), is below.
 
 `MainSlide.vue`
 
 ```
 <template>
   <div class="container">
-    Main Slide
+    Main Slide 
   </div>
 </template>
 
@@ -202,7 +202,8 @@ export default {
 .container {
   border: 1px dotted pink;
   margin-left: 5px;
-  flex-grow: 1;
+  width: 30em;
+  height: 20em;
 }
 </style>
 ```
@@ -224,9 +225,8 @@ export default {
 
 <style scoped>
 .container {
-  width: auto;
-  margin: 2px;
   border: 1px dotted grey;
+  height: 10em;
 }
 </style>
 ```
@@ -237,6 +237,8 @@ export default {
 <template>
   <div class="container">
     Slides
+    <SlideThumbnail />
+    <SlideThumbnail />
     <SlideThumbnail />
     <SlideThumbnail />
   </div>
@@ -255,12 +257,11 @@ export default {
 
 <style scoped>
 .container {
-  border: 2px solid black;
-  padding: 8px;
   display: flex;
   justify-content: space-around;
   flex-direction: column;
-  width: 20em;
+  width: 15em;
+  height: auto;
 }
 </style>
 ```
@@ -306,7 +307,5 @@ Your browser should now show...
 
 \[TODO: Image\]
 
-Not too useful. However, using a few directives, we can do a lot. But first, we need to have a brief talk about state management in Vue, and the _flux _pattern.
-
-
+Not too useful. However, using a few directives, we can do a lot. But first, we need to have a brief talk about state management in Vue, and the \_flux \_pattern.
 
