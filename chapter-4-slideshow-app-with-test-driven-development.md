@@ -553,7 +553,6 @@ We can achieve this using like so:
 <style scoped>
   ...
 </style>
-
 ```
 
 Using `v-for` and passing each element to the `SlideThumbnail` component. Note, the `...` means the content has not changed, in `<script>` and `<style>`.
@@ -588,14 +587,14 @@ LOG LOG: <div data-v-5198ddbe="" class="container">
 
   SlideThumbnailContainer.vue
     ✗ should receieve an array of slides
-	expected 'One slide.' to equal 'Test'
+    expected 'One slide.' to equal 'Test'
 ```
 
 To get this test to pass, we need to implement the functionality for `SlideThumbnail`. This includes receiving the correct prop \(from `ThumbnailContainer`, and then rendering the content\).
 
 ### 4.6: Another Test! SlideThumbnail.spec.js
 
-First a test for the prop. Create `test/unit/spec/SlideThumbnail.spec.js`, and write a test for the prop. It should be almost the same as the previous test, but with the correct component. I'd recommend trying to write it without immediately looking below at the code. There is a small gotcha! So don't spent too long if it isn't working. 
+First a test for the prop. Create `test/unit/spec/SlideThumbnail.spec.js`, and write a test for the prop. It should be almost the same as the previous test, but with the correct component. I'd recommend trying to write it without immediately looking below at the code. There is a small gotcha! So don't spent too long if it isn't working.
 
 Here is how the test looks:
 
@@ -646,7 +645,7 @@ Now running `npm run unit` should yield _two_ passing tests - by making `SlideTh
 
 Two points of interest before we go on:
 
-1\) If you remove `vm.$mount()`, you will find the tests fail - why? Because by not mounting the component, no rendering occurs, so no content is able to be found using `querySelector` and the tests fail. 
+1\) If you remove `vm.$mount()`, you will find the tests fail - why? Because by not mounting the component, no rendering occurs, so no content is able to be found using `querySelector` and the tests fail.
 
 2\) In the `SlideThumbnail` test, `vm.$el.querySelector` returns null. The reason is because in that component, the text we are looking for is in the _root_ `<div>` tag. `querySelector` looks for elements within the root `<div>` tag, not include itself. So we can just do `vm.$el.textContent` to get the `slide.content`.
 
@@ -695,7 +694,5 @@ export default {
 </style>
 ```
 
-
-
-
+![](/assets/chatper_4_checkpoint.png)
 
