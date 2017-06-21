@@ -20,7 +20,7 @@ Setup e2e tests with Nightwatch? Yes
 
 then `cd` in, run `yarn install` or `npm install` if you wish. Yarn will likely become the standard, so it's good to be in habit of using it, but the commands do the same thing in this case: install the modules from `package.json`. Wait a while and `npm run dev`. The application should automatically open! If not, use your browser to visit localhost:8080, where you can see the app.
 
-#### 4.2: Project Structure and Features
+#### 4.2: Project Structure and Components Setup
 
 This section briefly explains the structure of the project and the features we will be using. Navigate to the project folder, where you see the below structure.
 
@@ -126,7 +126,7 @@ export default {
 
 Time to start building. We are going to make a simple clone of Microsoft's Powerpoint application. On the left hand side of the screen, we will have a number of small, editable slides, and selecting one will show a large version of it on the right. We will write tests for each feature and piece of functionality as we go.
 
-We will start with the left hand side bar, which will contain a number of small slides. First things first, make a component called `SlideThumbnailContainer.vue`, inside of `components`, with the following skeleton. 
+We will start with the left hand side bar, which will contain a number of small slides. First things first, make a component called `SlideThumbnailContainer.vue`, inside of `components`, with the following skeleton.
 
 ```
 <template>
@@ -181,7 +181,31 @@ Note I have removed the default styling.
 
 If you are still running `npm run dev` in a terminal window from before, the page should automatically update and display "Slides" on the screen \(or an error overlay from the linting\). Webpack hot reload is not perfect, so you might need to refresh the page. If you stopped the terminal from earlier, run `npm run dev` again.
 
-Next, onto the thumbnails. Repeat the same procedure above: make a file called `SlideThumbnail.vue` inside `components`, put the default template in, but this time import `SlideThumbnail` inside of `SlideThumbnailContainer`, not `Hello`.
+Next, onto the thumbnails. Repeat the same procedure above: make a file called `SlideThumbnail.vue` inside `components`, put the default template in, but this time import `SlideThumbnail` inside of `SlideThumbnailContainer`, not `Hello`. And then do it again, for a component called `MainSlide`, which _will _be rendered inside of `Hello`. The current code for all the components \(total of four\), is below.
+
+`MainSlide.vue`
+
+```
+<template>
+  <div class="container">
+    Main Slide
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'MainSlide'
+}
+</script>
+
+<style scoped>
+.container {
+  border: 1px dotted pink;
+  margin-left: 5px;
+  flex-grow: 1;
+}
+</style>
+```
 
 `SlideThumbnail.vue`
 
@@ -199,15 +223,21 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  width: auto;
+  margin: 2px;
+  border: 1px dotted grey;
+}
 </style>
 ```
 
-`SlideThumbnailContainer`
+`SlideThumbnailContainer.vue`
 
 ```
 <template>
   <div class="container">
     Slides
+    <SlideThumbnail />
     <SlideThumbnail />
   </div>
 </template>
@@ -224,12 +254,59 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  border: 2px solid black;
+  padding: 8px;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  width: 20em;
+}
 </style>
 ```
+
+`Hello.vue`
+
+```
+<template>
+  <div class="hello">
+    <SlideThumbnailContainer />
+    <MainSlide />
+  </div>
+</template>
+
+<script>
+import SlideThumbnailContainer from '@/components/SlideThumbnailContainer'
+import MainSlide from '@/components/MainSlide'
+export default {
+  name: 'hello',
+  components: {
+    SlideThumbnailContainer,
+    MainSlide
+  },
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js App'
+    }
+  }
+}
+</script>
+
+<style scoped>
+.hello {
+  display: flex;
+  justify-content: stretch;
+}
+</style>
+```
+
+I added some css so the application looks decent -- css is not the focus of this book, so it is not explained. It's fairly simple css anyway, so it should be easy enough to figure out things are working.  Notice I use the same class, `container`, multiple times - because of the `scoped` tag in the `<style>` tag, the style is uniquely applied to the component it is declared in.
 
 Your browser should now show...
 
 \[TODO: Image\]
+
+Not too useful. However, using a few directives, we can do a lot. But first, we need to have a brief talk about state management in Vue, and the _flux _pattern.
 
 
 
