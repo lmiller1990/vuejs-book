@@ -425,7 +425,7 @@ The link to the official documentation explains it well - by providing a key, Vu
 
 ```
 <div id="app">
-  <Todo v-for="todo in todos" :todo="todo" :key="todo.id" @delete="deleteTodo">
+  <Todo v-for="todo in todos" :todo="todo" key="todo.id" @delete="deleteTodo">
   </Todo>
 </div>
 ```
