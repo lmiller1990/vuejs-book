@@ -397,7 +397,7 @@ const vm = new Component({
 })
 ```
 
-We want to test that a `slides` prop is passed. Lastly, we mount the component using the lifecycle hook `$mount`. This is called automatically in the main application, when Vue detects custom component markup, such as `<SlideThumbnailContainer />`, however in a unit test, we need to do it manually.
+We want to test that a `slides` prop is passed. Lastly, we mount the component using the lifecycle hook `$mount`. This is called automatically in the main application, when Vue detects custom component markup, such as `<SlideThumbnailContainer />`, however in a unit test to trigger rendering, so we need to do it manually.
 
 `vm.$mount()`
 
@@ -434,5 +434,91 @@ describe('SlideThumbnailContainer.vue', () => {
 })
 ```
 
-L
+Now, run the test. We expect it to fail - we haven't implemented the functionality yet! The errors _should_ help guide us.
+
+`npm run unit`
+
+I get:
+
+```
+✘ 1 problem (1 error, 0 warnings)
+
+Errors:
+  1  http://eslint.org/docs/rules/comma-dangle
+ @ ./test/unit/specs/SlideThumbnailContainer.spec.js 7:31-78
+ @ ./test/unit/specs \.spec$
+ @ ./test/unit/index.js
+
+  SlideThumbnailContainer.vue
+    ✗ should receieve an array of slides
+	undefined is not an object (evaluating 'vm.slides.length')
+	webpack:///test/unit/specs/SlideThumbnailContainer.spec.js:16:21 <- index.js:10570:21
+
+
+PhantomJS 2.1.1 (Mac OS X 0.0.0): Executed 1 of 1 (1 FAILED) ERROR (0.035 secs / 0.01 secs)
+```
+
+`vm.slides.length` is `undefined`. Why? We didn't declare any props in the component! Let's fix that.
+
+ThumbnailContainer.vue
+
+```
+<template>
+  <div class="container">
+    Slides
+    <SlideThumbnail />
+    <SlideThumbnail />
+    <SlideThumbnail />
+    <SlideThumbnail />
+  </div>
+</template>
+
+<script>
+import SlideThumbnail from '@/components/SlideThumbnail'
+export default {
+  name: 'SlideThumbnailContainer',
+  components: {
+    SlideThumbnail
+  },
+  props: ['slides']
+}
+</script>
+
+<style scoped>
+/* omitted */
+</style>
+```
+
+Now `ThumbnailContainer.vue` knows to receive a `slides` prop. Another way to write props is:
+
+```
+props: {
+  slides: {
+    type: Object,
+    default () { 
+      return [{ id: 0, content: 'default content' }]
+    }
+  }
+}
+```
+
+This way is a bit more typing, and takes a little more space, but is sometimes preferred, especially in large projects, where other developers might not know what kind of object will be passed. I prefer the second way, since it serves as a kind of documentation for your component - all the information, such as what the component does and what kind of data it needs to do it's job is self contained. For now I will use the first one, for sake of saving space.
+
+Run `npm run unit` again...
+
+```
+SlideThumbnailContainer.vue
+    ✓ should receieve an array of slides
+
+PhantomJS 2.1.1 (Mac OS X 0.0.0): Executed 1 of 1 SUCCESS (0.019 secs / 0.01 secs)
+TOTAL: 1 SUCCESS
+```
+
+Great! The test passes - we can be confident the component is receiving the right data.
+
+> Note: technically for this particular test, `$mount` is not needed, since we are not rendering anything. Props can be passed without any need to render or even enter the Vue lifecycle - however, in the future of this test, we _will_ be rendering something \(the slides\) so it felt like a good time to introduce it.
+
+
+
+
 
