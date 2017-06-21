@@ -371,11 +371,67 @@ import Vue from 'vue'
 import SlideThumbnailContainer from '@/components/SlideThumbnailContainer'
 
 describe('SlideThumbnailContainer.vue', () => {
-  it('should receieve an array of slides', () => {
-    
+  it('should receieve an array of slides as a prop', () => {
+
   })
 })
+```
 
+First we import Vue, and the components, and whatever else we need to test. In this case, we will be mounting the component, and using some of the Vue internal apis, so we need both Vue and the component. If we were just testing a method that does not need Vue itself, we would simple import the method, and nothing else.
+
+The `describe` block explains what the subject of this spec file is, and the `it` block \(which we can have any amount of\) explains what each individual test is doing.
+
+First things first - we should declare and extend a Vue instance with our component, SlideThumbnailContainer. This way, the component will get all the Vue lifecycle and api methods, such as `created`, `data`, `props`, etc, as it does in the real application, where we import the component and attach it in the `components: { }` section of `Hello.vue`.
+
+`const Component = Vue.extend(SlideThumbnailContainer)`
+
+Next, we instantiate an instance of the component. At this point, we can pass props using the `propsData` option. You can read more about this api option here: https://vuejs.org/v2/api/\#propsData
+
+```
+const vm = new Component({
+  propsData: {
+    slides: [
+      { id: 0, content: 'Test' }
+    ]
+  }
+})
+```
+
+We want to test that a `slides` prop is passed. Lastly, we mount the component using the lifecycle hook `$mount`. This is called automatically in the main application, when Vue detects custom component markup, such as `<SlideThumbnailContainer />`, however in a unit test, we need to do it manually. 
+
+`vm.$mount()`
+
+Now, time to make some assertions about what we want the component to look like after it has been mounted. We expect it to have a `slides` prop, which has one item in it, with `content` equal to `'Test'`.
+
+```
+expect(vm.slides.length).to.equal(1)
+expect(vm.slides[0].content).to.equal('Test')
+```
+
+The full listing looks like:
+
+SlideThumbnailContainer.spec.js
+
+```
+import Vue from 'vue'
+import SlideThumbnailContainer from '@/components/SlideThumbnailContainer'
+
+describe('SlideThumbnailContainer.vue', () => {
+  it('should receieve an array of slides', () => {
+    const Component = Vue.extend(SlideThumbnailContainer)
+    const vm = new Component({
+      propsData: {
+        slides: [
+          { id: 0, content: 'Test' }
+        ]
+      }
+    })
+    vm.$mount()
+
+    expect(vm.slides.length).to.equal(1)
+    expect(vm.slides[0].content).to.equal('Test')
+  })
+})
 ```
 
 
