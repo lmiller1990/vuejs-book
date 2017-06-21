@@ -212,7 +212,7 @@ export default {
 
 ```
 <template>
-  <div class="container">
+  <div class="thumbnail">
     One slide.
   </div>
 </template>
@@ -224,7 +224,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.thumbnail {
   border: 1px dotted grey;
   height: 10em;
 }
@@ -451,8 +451,8 @@ Errors:
 
   SlideThumbnailContainer.vue
     ✗ should receieve an array of slides
-	undefined is not an object (evaluating 'vm.slides.length')
-	webpack:///test/unit/specs/SlideThumbnailContainer.spec.js:16:21 <- index.js:10570:21
+    undefined is not an object (evaluating 'vm.slides.length')
+    webpack:///test/unit/specs/SlideThumbnailContainer.spec.js:16:21 <- index.js:10570:21
 
 
 PhantomJS 2.1.1 (Mac OS X 0.0.0): Executed 1 of 1 (1 FAILED) ERROR (0.035 secs / 0.01 secs)
@@ -516,7 +516,184 @@ TOTAL: 1 SUCCESS
 
 Great! The test passes - we can be confident the component is receiving the right data.
 
-> Note: technically for this particular test, `$mount` is not needed, since we are not rendering anything. Props can be passed without any need to render or even enter the Vue lifecycle - however, in the future of this test, we _will_ be rendering something \(the slides\) so it felt like a good time to introduce it.
+> Note: technically for this particular test, `$mount` is not needed, since we are not rendering anything. Props can be passed without any need to render or even enter the Vue lifecycle - however, the next thing will do is render something \(the slide thumbanils\) so it felt like a good time to introduce it.
+
+Okay - we have the data. Now, let's render it. At the moment, if you insert a `console.log(vm.$el)` into the test after `vm.$mount()`, you can see the rendered markup. Namely:
+
+```
+<div data-v-5198ddbe="" class="container">
+  Slides
+  <div data-v-3824ac9a="" data-v-5198ddbe="" class="container">
+  One slide.
+</div> <div data-v-3824ac9a="" data-v-5198ddbe="" class="container">
+  One slide.
+</div> <div data-v-3824ac9a="" data-v-5198ddbe="" class="container">
+  One slide.
+</div> <div data-v-3824ac9a="" data-v-5198ddbe="" class="container">
+  One slide.
+</div></div>
+```
+
+Pretty ugly - the HTML formatting isn't that nice, but you can see are just rendering a bunch of hard coded `SlideThumbnail` components. What we want to do is loop through the `slides` passed as a prop, and render those - like we did in the Todo application.
+
+We can achieve this using like so:
+
+```
+<template>
+  <div class="container">
+    Slides
+    <SlideThumbnail v-for="slide in slides" :slide="slide" key="slide.id" />
+  </div>
+</template>
+
+<script>
+  ...
+</script>
+
+<style scoped>
+  ...
+</style>
+
+```
+
+Using `v-for` and passing each element to the `SlideThumbnail` component. Note, the `...` means the content has not changed, in `<script>` and `<style>`.
+
+`npm unit test` yields:
+
+```
+<div data-v-5198ddbe="" class="container">
+  Slides
+  <div data-v-3824ac9a="" data-v-5198ddbe="" class="container" slide="[object Object]">
+  One slide.
+</div></div>
+
+  SlideThumbnailContainer.vue
+    ✓ should receieve an array of slides
+```
+
+`v-for` did it's job, and the `slide` object is indeed been passed to the `SlideThumbnail` component - however nothing is happening. This make sense - we did not implement any logic for `SlideThumbnail` yet. The test still passes, since we did not make any expectations about what to render. Let's do that first.
+
+After the two current `expect` asserts, add another:
+
+`expect(vm.$el.querySelector('.thumbnail').textContent.trim()).to.equal('Test')`
+
+We can select an element by class using `querySelector('.thumbnail')`, since the class name is `thumbnail`. If it is an id, we do `'#thumbnail'`. `trim()`is required to remove any whitespace, which some browsers add. Running the test using `npm run unit` yields:
+
+```
+LOG LOG: <div data-v-5198ddbe="" class="container">
+  Slides
+  <div data-v-3824ac9a="" data-v-5198ddbe="" class="thumbnail" slide="[object Object]">
+  One slide.
+</div></div>
+
+  SlideThumbnailContainer.vue
+    ✗ should receieve an array of slides
+	expected 'One slide.' to equal 'Test'
+```
+
+To get this test to pass, we need to implement the functionality for `SlideThumbnail`. This includes receiving the correct prop \(from `ThumbnailContainer`, and then rendering the content\).
+
+### 4.6: Another Test! SlideThumbnail.spec.js
+
+First a test for the prop. Create `test/unit/spec/SlideThumbnail.spec.js`, and write a test for the prop. It should be almost the same as the previous test, but with the correct component. I'd recommend trying to write it without immediately looking below at the code. There is a small gotcha! So don't spent too long if it isn't working. 
+
+Here is how the test looks:
+
+test/unit/spec/SlideThumbnail.spec.js
+
+```
+import Vue from 'vue'
+import SlideThumbnail from '@/components/SlideThumbnail'
+
+describe('SlideThumbnail.vue', () => {
+  it('should receieve a single slide with content', () => {
+    const Component = Vue.extend(SlideThumbnail)
+    const vm = new Component({
+      propsData: {
+        slide: { id: 0, content: 'Test' }
+      }
+    })
+    vm.$mount()
+
+    expect(vm.slide.content).to.equal('Test')
+    expect(vm.$el.textContent.trim()).to.equal('Test')
+  })
+})
+```
+
+Of course it will fail at first - we need to pass the prop and render it. The updated `SlideThumbnail` looks like this:
+
+```
+<template>
+  <div class="thumbnail">
+    {{ slide.content }}
+  </div>
+</template>
+
+<script>
+export default {
+  props: ['slide'],
+  name: 'SlideThumbnail'
+}
+</script>
+
+<style scoped>
+  ...
+</style
+```
+
+Now running `npm run unit` should yield _two_ passing tests - by making `SlideThumbnail` pass, `SlideThumbnailContainer` is also able to get the correct content rendered and pass.
+
+Two points of interest before we go on:
+
+1\) If you remove `vm.$mount()`, you will find the tests fail - why? Because by not mounting the component, no rendering occurs, so no content is able to be found using `querySelector` and the tests fail. 
+
+2\) In the `SlideThumbnail` test, `vm.$el.querySelector` returns null. The reason is because in that component, the text we are looking for is in the _root_ `<div>` tag. `querySelector` looks for elements within the root `<div>` tag, not include itself. So we can just do `vm.$el.textContent` to get the `slide.content`.
+
+Writing these tests does take a while, but in the long run it is worth it. You can know if a new feature breaks old ones, or if another developer works on your application in the future, it will be much easier for them to know how the app works, and not break existing features. It is a good habit to get into and second nature to good software developers.
+
+### 4.7: Checkpoint
+
+Let's actually see what the app looks like in the browser. Don't forget to actually pass the `store.slides` to the `SlideThumbnailContainer` in `Hello`, like below:
+
+```
+<template>
+  <div class="hello">
+    <SlideThumbnailContainer :slides="store.slides" />
+    <MainSlide />
+  </div>
+</template>
+
+<script>
+import SlideThumbnailContainer from '@/components/SlideThumbnailContainer'
+import MainSlide from '@/components/MainSlide'
+export default {
+  name: 'hello',
+  components: {
+    SlideThumbnailContainer,
+    MainSlide
+  },
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js App',
+      store: {
+        slides: [
+          { id: 0, title: 'Demo', content: 'This is a demo slide' },
+          { id: 1, title: 'Vue', content: 'Flux is a great way to manage your app' }
+        ]
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+.hello {
+  display: flex;
+  justify-content: stretch;
+}
+</style>
+```
 
 
 
