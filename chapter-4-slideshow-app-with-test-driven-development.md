@@ -364,11 +364,19 @@ Looks good. Now, let's pass the slides to the `SlideThumbnailContainer` to displ
 
 Inside test/unit/specs/, create a new file called `SlideThumbnailContainer.spec.js`. Next, add the following test skeleton. Again, it might be a good idea to keep a copy of this - all tests start out using the same template.
 
+SlideThumbnailContainer.spec.js
 
+```
+import Vue from 'vue'
+import SlideThumbnailContainer from '@/components/SlideThumbnailContainer'
 
+describe('SlideThumbnailContainer.vue', () => {
+  it('should receieve an array of slides', () => {
+    
+  })
+})
 
-
-
+```
 
 
 
