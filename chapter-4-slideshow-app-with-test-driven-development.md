@@ -385,7 +385,7 @@ First things first - we should declare and extend a Vue instance with our compon
 
 `const Component = Vue.extend(SlideThumbnailContainer)`
 
-Next, we instantiate an instance of the component. At this point, we can pass props using the `propsData` option. You can read more about this api option here: https://vuejs.org/v2/api/\#propsData
+Next, we instantiate an instance of the component. At this point, we can pass props using the `propsData` option. You can read more about this api option here: [https://vuejs.org/v2/api/\#propsData](https://vuejs.org/v2/api/#propsData)
 
 ```
 const vm = new Component({
@@ -397,7 +397,7 @@ const vm = new Component({
 })
 ```
 
-We want to test that a `slides` prop is passed. Lastly, we mount the component using the lifecycle hook `$mount`. This is called automatically in the main application, when Vue detects custom component markup, such as `<SlideThumbnailContainer />`, however in a unit test, we need to do it manually. 
+We want to test that a `slides` prop is passed. Lastly, we mount the component using the lifecycle hook `$mount`. This is called automatically in the main application, when Vue detects custom component markup, such as `<SlideThumbnailContainer />`, however in a unit test, we need to do it manually.
 
 `vm.$mount()`
 
@@ -434,5 +434,5 @@ describe('SlideThumbnailContainer.vue', () => {
 })
 ```
 
-
+L
 
