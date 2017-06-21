@@ -307,5 +307,7 @@ Your browser should now show...
 
 \[TODO: Image\]
 
-Not too useful. However, using a few directives, we can do a lot. But first, we need to have a brief talk about state management in Vue, and the \_flux \_pattern.
+Not too useful. However, using a few directives, we can do a lot. But first, we need to have a brief talk about state management in Vue, and the _flux _pattern that was born to handle complex user interfaces in single page applications.
+
+
 
