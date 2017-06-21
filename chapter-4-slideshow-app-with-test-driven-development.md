@@ -355,8 +355,20 @@ export default {
   display: flex;
   justify-content: stretch;
 }
-</style>    
+</style>
 ```
+
+Looks good. Now, let's pass the slides to the `SlideThumbnailContainer` to display - but before doing so, let's write our first real test, to ensure the behaviour is as expected.
+
+### 4.5: Test! SlideThumbnailContainer.spec.js
+
+Inside test/unit/specs/, create a new file called `SlideThumbnailContainer.spec.js`. Next, add the following test skeleton. Again, it might be a good idea to keep a copy of this - all tests start out using the same template.
+
+
+
+
+
+
 
 
 
