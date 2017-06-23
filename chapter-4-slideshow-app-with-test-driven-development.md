@@ -152,7 +152,7 @@ Next, make sure everything is working by importing the component in `Hello.vue`,
 ```
 <template>
   <div>
-    <SlideThumbnailContainer /> // 3) render the component
+    <SlideThumbnailContainer /> <!-- 3) render the component -->
   </div>
 </template>
 
@@ -187,7 +187,7 @@ Next, onto the thumbnails. Repeat the same procedure above: make a file called `
 
 ```
 <template>
-  <div class="container">
+  <div class="main slide container">
     Main Slide 
   </div>
 </template>
@@ -199,7 +199,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.main.slide.container {
   border: 1px dotted pink;
   margin-left: 5px;
   width: 30em;
@@ -725,7 +725,7 @@ MainSlide.vue
 
 ```
 <template>
-  <div class="container">
+  <div class="main slide container">
     <input id="content" type="text" v-model="slide.content">
   </div>
 </template>
@@ -752,9 +752,7 @@ found in
 ---> <MainSlide> at ...
 ```
 
-The test is fine -- because we pass a slide using`propsData`. However in the actual app, we do not pass a slide, so `slide.content` is undefined, and `v-model` doesn't know what to bind too. The goal is to click a `SlideThumbnail`, and then have that reflected in `MainSlide`. Let's write a test for that functionality. This test will come in two parts - the uni test, which will test a method to set a `mainSlide` prop, and an integration test, to actually simulate clicking a slide, which triggers the method.
+The test is fine -- because we pass a slide using`propsData`. However in the actual app, we do not pass a slide, so `slide.content` is undefined, and `v-model` doesn't know what to bind too. The goal is to click a `SlideThumbnail`, and then have that reflected in `MainSlide`. Let's use TDD to assist in creating this feature. This test will come in two parts - the uni test, which will test a method to set a `mainSlide` prop, and an integration test, to actually simulate clicking a slide, which triggers the method.
 
 Firstly, hop back to SlideThumbnail.spec.js and add the following:
-
-
 
