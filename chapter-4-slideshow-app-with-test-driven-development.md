@@ -694,7 +694,11 @@ export default {
 </style>
 ```
 
-I see something like below:![](/assets/chatper_4_checkpoint.png)The next feature will be when clicking on a thumbnail, you the main slide should show the content, but enlarged, and allow you to edit it. Since we are good software developers, let's write a test for that! Firstly another unit test, to make sure the `MainSlide` is getting the write values passed, then another kind of test - an integration, or end to end \(or _e2e_ for short\) test.
+I see something like below:![](/assets/chatper_4_checkpoint.png)
+
+### 4.8: The first integration test
+
+The next feature will be when clicking on a thumbnail, you the main slide should show the content, but enlarged, and allow you to edit it. Since we are good software developers, let's write a test for that! Firstly another unit test, to make sure the `MainSlide` is getting the write values passed, then another kind of test - an integration, or end to end \(or _e2e_ for short\) test.
 
 The unit test starts of looks similar to the previous ones:
 
@@ -753,6 +757,153 @@ found in
 ```
 
 The test is fine -- because we pass a slide using`propsData`. However in the actual app, we do not pass a slide, so `slide.content` is undefined, and `v-model` doesn't know what to bind too. The goal is to click a `SlideThumbnail`, and then have that reflected in `MainSlide`. Let's use TDD to assist in creating this feature. This test will come in two parts - the unit tests, for individual methods in `SlideThumbnail`, `SlideThumbnailContainer` and `Hello`, and an integration test, to actually simulate clicking a slide in a browser.
+
+A quick review of the architecture of our app:
+
+* Hello
+  * MainSlide
+  * SlideThumbnailContainer
+    * SlideThumbnail
+
+Remembering all the data is stored at the `Hello` level. When `SlideThumbnail` is clicked, we want to set a new variable called `mainSlide` at the top level, based on the thumbnail clicked, which will the be passed to `MainSlide`. To achieve this we will use the `$emit` API method, like in the Todo app in chapter 2. In this case, the `id` of the selected slide will be emitted from `SlideThumbnail` to `SlideThumbnailContainer`, and then again from `SlideThumbnailContainer` to`Hello`. First, a unit test on `SlideThumbnail` for the existence of such a method. Inside of SlideThumbnail.spec.js, under the first `it()` statement, add:
+
+```
+it('should have a function to emit an event when clicked', () => {
+  const vm = new Vue(SlideThumbnail)
+ 
+  expect(vm.$options.methods.clicked).to.be.a('function')
+})
+```
+
+This test simply verifies the existence of the required method, which I am calling `clicked`. Since the feature involves many components, an integration test is more appropriate to ensure the correct behavior, however is it still good to verify the function exists - this kind of test could help a future developer when it comes to refactoring, or understanding what a function is used for.
+
+To get this to pass, update the component to include the method as below: 
+
+SlideThumbnail.vue
+
+```
+<template>
+  <div class="thumbnail"> 
+    {{ slide.content }}
+  </div>
+</template>
+
+<script>
+export default {
+  props: ['slide'],
+  name: 'SlideThumbnail',
+  methods: {
+    clicked () {
+      this.$emit('slideSelected', this.slide.id)
+    }
+  }
+}
+</script>
+
+<style scoped>
+...
+</style>
+```
+
+A similar test is needed in SlideThumbnailContainer.spec.js
+
+```
+it('should contain a function to emit a clicked slide', () => {
+  const vm = new Vue(SlideThumbnailContainer)
+
+  expect(vm.$options.methods.slideEmitted).to.be.a('function')
+})
+```
+
+And to get it to pass, add a `methods` object with the required method:
+
+SlideThumbnailContainer.vue
+
+```
+methods: {
+  slideEmitted (id) {
+    this.$emit('setMainSlide', id)
+  }
+}
+```
+
+Now lastly, a method in the top level `Hello` component is required, to actually set the main slide, as well as a variable in the store object to hold it. I deleted the `Hello.spec.js` the template initially created, but I'll recreate it now, and add a test for a method that listens for the `setMainSlide` event, and finds the correct slide by the `id` passed from the event.
+
+Hello.spec.js
+
+```
+import Vue from 'vue'
+import Hello from '@/components/Hello'
+
+describe('Hello.vue', () => {
+  it('should listen for a setMainSlide event and set the correct slide', () => {
+    const Component = Vue.extend(Hello)
+    const vm = new Component({
+      propsData: {
+        mainSlide: null
+      }
+    }).$mount()
+
+    vm.store = {
+      slides: [
+        { id: 0, content: 'Text' }
+      ]
+    }
+
+    expect(vm.setMainSlide).to.be.a('function')
+    
+    vm.setMainSlide(0)
+
+    expect(vm.mainSlide).to.not.equal(null)
+    expect(vm.mainSlide.content).to.equal('Text')
+  })
+})
+```
+
+Notice that _after_ calling `$mount` I set `vm.store` to have a single slide. If you pass the `store` when making the extending the initial Vue instance, instead of using the one you pass, the one defined in the original component will take priority. In this case, instead of getting the single slide we would be passing in this test, the component would use the two hardcoded slides in the store we defined in the `.vue` file earlier.  Try moving the store inside the `new Component` declaration and see what happens.
+
+Getting this test to pass it also trivial; just add the `mainSlide` prop and a simple method that filters and assigns `mainSlide` for the correct slide based on `id`.
+
+```
+<template>
+  <div class="hello">
+    <SlideThumbnailContainer :slides="store.slides" />
+    <MainSlide />
+  </div>
+</template>
+
+<script>
+import SlideThumbnailContainer from '@/components/SlideThumbnailContainer'
+import MainSlide from '@/components/MainSlide'
+export default {
+  name: 'hello',
+  components: {
+    SlideThumbnailContainer,
+    MainSlide
+  },
+  data () {
+    return {
+      store: {
+        slides: [
+          { id: 0, title: 'Demo', content: 'This is a demo slide' },
+          { id: 1, title: 'Vue', content: 'Flux is a great way to manage your app' }
+        ]
+      },
+      mainSlide: null
+    }
+  },
+  methods: {
+    setMainSlide (id) {
+      this.mainSlide = this.store.slides.filter(s => s.id === id)[0]
+    }
+  }
+}
+</script>
+
+<style scoped>
+...
+</style>
+```
 
 
 
