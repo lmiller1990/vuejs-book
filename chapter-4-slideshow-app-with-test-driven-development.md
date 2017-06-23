@@ -752,7 +752,7 @@ found in
 ---> <MainSlide> at ...
 ```
 
-The test is fine -- because we pass a slide using`propsData`. However in the actual app, we do not pass a slide, so `slide.content` is undefined, and `v-model` doesn't know what to bind too. The goal is to click a `SlideThumbnail`, and then have that reflected in `MainSlide`. Let's use TDD to assist in creating this feature. This test will come in two parts - the uni test, which will test a method to set a `mainSlide` prop, and an integration test, to actually simulate clicking a slide, which triggers the method.
+The test is fine -- because we pass a slide using`propsData`. However in the actual app, we do not pass a slide, so `slide.content` is undefined, and `v-model` doesn't know what to bind too. The goal is to click a `SlideThumbnail`, and then have that reflected in `MainSlide`. Let's use TDD to assist in creating this feature. This test will come in two parts - the unit tests, for individual methods in `SlideThumbnail`, `SlideThumbnailContainer` and `Hello`, and an integration test, to actually simulate clicking a slide in a browser.
 
-Firstly, hop back to SlideThumbnail.spec.js and add the following:
+
 
