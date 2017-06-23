@@ -696,3 +696,65 @@ export default {
 
 I see something like below:![](/assets/chatper_4_checkpoint.png)The next feature will be when clicking on a thumbnail, you the main slide should show the content, but enlarged, and allow you to edit it. Since we are good software developers, let's write a test for that! Firstly another unit test, to make sure the `MainSlide` is getting the write values passed, then another kind of test - an integration, or end to end \(or _e2e_ for short\) test.
 
+The unit test starts of looks similar to the previous ones:
+
+MainSlide.spec.js
+
+```
+import Vue from 'vue'
+import MainSlide from '@/components/MainSlide'
+
+describe('MainSlide.vue', () => {
+  it('should receieve a single slide with content', () => {
+    const Component = Vue.extend(MainSlide)
+    const vm = new Component({
+      propsData: {
+        slide: { id: 0, content: 'Test' }
+      }
+    })
+    vm.$mount()
+
+    expect(vm.$el.querySelector("#content").value).to.equal('Test')
+  })
+})
+```
+
+`MainSlide` does not just show content - it lets us _edit_ it, too. We will use `<input>` tags, and `v-model`. This test fails - try to update `MainSlide` yourself, before looking below to see how to get the test to pass.
+
+MainSlide.vue
+
+```
+<template>
+  <div class="container">
+    <input id="content" type="text" v-model="slide.content">
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'MainSlide',
+  props: ['slide']
+}
+</script>
+
+<style scoped>
+  ...
+</style>
+```
+
+The test should pass now! However, if you try the app out in your browser, the console will throw errors such as:
+
+```
+[Vue warn]: Error in render function: "TypeError: Cannot read property 'content' of undefined"
+
+found in
+
+---> <MainSlide> at ...
+```
+
+The test is fine -- because we pass a slide using`propsData`. However in the actual app, we do not pass a slide, so `slide.content` is undefined, and `v-model` doesn't know what to bind too. The goal is to click a `SlideThumbnail`, and then have that reflected in `MainSlide`. Let's write a test for that functionality. This test will come in two parts - the uni test, which will test a method to set a `mainSlide` prop, and an integration test, to actually simulate clicking a slide, which triggers the method.
+
+Firstly, hop back to SlideThumbnail.spec.js and add the following:
+
+
+
