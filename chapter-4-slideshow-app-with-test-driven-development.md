@@ -770,14 +770,14 @@ Remembering all the data is stored at the `Hello` level. When `SlideThumbnail` i
 ```
 it('should have a function to emit an event when clicked', () => {
   const vm = new Vue(SlideThumbnail)
- 
+
   expect(vm.$options.methods.clicked).to.be.a('function')
 })
 ```
 
 This test simply verifies the existence of the required method, which I am calling `clicked`. Since the feature involves many components, an integration test is more appropriate to ensure the correct behavior, however is it still good to verify the function exists - this kind of test could help a future developer when it comes to refactoring, or understanding what a function is used for.
 
-To get this to pass, update the component to include the method as below: 
+To get this to pass, update the component to include the method as below:
 
 SlideThumbnail.vue
 
@@ -851,7 +851,7 @@ describe('Hello.vue', () => {
     }
 
     expect(vm.setMainSlide).to.be.a('function')
-    
+
     vm.setMainSlide(0)
 
     expect(vm.mainSlide).to.not.equal(null)
@@ -869,6 +869,148 @@ Getting this test to pass it also trivial; just add the `mainSlide` prop and a s
   <div class="hello">
     <SlideThumbnailContainer :slides="store.slides" />
     <MainSlide />
+  </div>
+</template>
+
+<script>
+import SlideThumbnailContainer from '@/components/SlideThumbnailContainer'
+import MainSlide from '@/components/MainSlide'
+export default {
+  name: 'hello',
+  components: {
+    SlideThumbnailContainer,
+    MainSlide
+  },
+  data () {
+    return {
+      store: {
+        slides: [
+          { id: 0, title: 'Demo', content: 'This is a demo slide' },
+          { id: 1, title: 'Vue', content: 'Flux is a great way to manage your app' }
+        ]
+      },
+      mainSlide: null
+    }
+  },
+  methods: {
+    setMainSlide (id) {
+      this.mainSlide = this.store.slides.filter(s => s.id === id)[0]
+    }
+  }
+}
+</script>
+
+<style scoped>
+...
+</style>
+```
+
+`npm run unit` shows all our tests passing. Each component works individually. Even though we have methods for emitting events, we haven't wired the event listeners up, so the components cannot communicate.. _yet._ This is what integration tests are for - to ensure many components can combine their functionality and produce a complete feature.
+
+Start by deleting the integration test the template came with in `test/e2e/specs/Hello.js`. Next, create a file called `SetMainSlide.js`. This is where our test will go. Inside, add the following:
+
+```
+module.exports = {
+  'Clicking a thumbnail sets the main slide': function (browser) {
+    const devServer = browser.globals.devServerURL
+
+    browser
+      .url(devServer)
+      .waitForElementVisible('#app', 5000)
+      .assert.elementNotPresent('.main.slide.container')
+      .click('.thumbnail')
+      .assert.elementPresent('.main.slide.container')
+      .getValue('.main.slide.container #content', function (result) { 
+        this.assert.equal(result.value, 'This is a demo slide')
+      })
+  }
+}
+```
+
+Integration tests should generally read as if a user is actually interacting with the app. In this test, we wait for the app to render, and asserts that the main slide is _not_ present - since no thumbnail has been clicked yet. After clicking on a thumbnail, we asserts that it _should_ be present, and contain the value of the first slide. 
+
+Running this test using `npm run e2e` yields something like this:
+
+```
+TEST FAILURE:  1 assertions failed, 3 passed. (4.122s)
+
+ ✖ SetMainSlide
+
+   - Clicking a thumbnail sets the main slide (2.426s)
+   Testing if element <.main.slide.container> is present.  - expected "present" but got: "not present"
+```
+
+Of course, because we have not set up the event listeners. Let's do so, start from `SlideThumbnail.vue`.
+
+```
+<template>
+  <div class="thumbnail" @click="clicked"> <!-- Listen for a click -->
+    {{ slide.content }}
+  </div>
+</template>
+
+<script>
+export default {
+  props: ['slide'],
+  name: 'SlideThumbnail',
+  methods: {
+    clicked () {
+      this.$emit('slideSelected', this.slide.id)
+    }
+  }
+}
+</script>
+
+<style scoped>
+...
+</style>
+```
+
+Next, `SlideThumbnailContainer` needs to listen for `slideSelected`, and in turn emit `setMainSlide`.
+
+```
+<template>
+  <div class="container">
+    Slides
+    <SlideThumbnail 
+       v-for="slide in slides" 
+      :slide="slide" 
+      @slideSelected="slideEmitted"
+      key="slide.id" />
+  </div>
+</template>
+
+<script>
+import SlideThumbnail from '@/components/SlideThumbnail'
+export default {
+  name: 'SlideThumbnailContainer',
+  components: {
+    SlideThumbnail
+  },
+  props: ['slides'],
+  methods: {
+    slideEmitted (id) {
+      this.$emit('setMainSlide', id)
+    }
+  }
+}
+</script>
+
+<style scoped>
+...
+</style>
+```
+
+Lastly, `Hello` will listen for `setMaiSlide`, and allocate the correct slide based on the id. I also will pass the `mainSlide` prop to `MainSlide`, and conditionally render `MainSlide` using `v-if` - we don't want to display it if no slide is selected.
+
+```
+<template>
+  <div class="hello">
+    <SlideThumbnailContainer 
+      :slides="store.slides"  
+      @setMainSlide="setMainSlide"
+    />
+    <MainSlide :slide="mainSlide" v-if="mainSlide" />
   </div>
 </template>
 
