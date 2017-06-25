@@ -927,7 +927,7 @@ module.exports = {
 }
 ```
 
-Integration tests should generally read as if a user is actually interacting with the app. In this test, we wait for the app to render, and asserts that the main slide is _not_ present - since no thumbnail has been clicked yet. After clicking on a thumbnail, we asserts that it _should_ be present, and contain the value of the first slide. 
+Integration tests should generally read as if a user is actually interacting with the app. In this test, we wait for the app to render, and asserts that the main slide is _not_ present - since no thumbnail has been clicked yet. After clicking on a thumbnail, we asserts that it _should_ be present, and contain the value of the first slide.
 
 Running this test using `npm run e2e` yields something like this:
 
@@ -1046,6 +1046,166 @@ export default {
 ...
 </style>
 ```
+
+### 4.9: An add slide button
+
+To finish the app, we need a way to add and remove slides. The tests and techniques are nothing not already covered, but serve as a good way to practise TDD with Vue. First, a test for the existence of a addSlide method:
+
+SlideThumbnailContainer.spec.js
+
+```
+import Vue from 'vue'
+import SlideThumbnailContainer from '@/components/SlideThumbnailContainer'
+
+describe('SlideThumbnailContainer.vue', () => {
+  
+  ...
+  
+  it('should contain a function to create a new slide when clicked', () => {
+    const vm = new Vue(SlideThumbnailContainer)
+
+    expect(vm.$options.methods.addSlide).to.be.a('function')
+  })
+})
+```
+
+Satisfying the test \(and adding a button to trigger the method\).
+
+SlideThumbnailContainer.vue
+
+```
+<template>
+  <div class="container">
+    Slides
+    <button @click="addSlide">Add Slide</button>
+    <SlideThumbnail 
+       v-for="slide in slides" 
+      :slide="slide" 
+      @slideSelected="slideEmitted"
+      key="slide.id" />
+  </div>
+</template>
+
+<script>
+import SlideThumbnail from '@/components/SlideThumbnail'
+export default {
+  name: 'SlideThumbnailContainer',
+  components: {
+    SlideThumbnail
+  },
+  props: ['slides'],
+  methods: {
+    slideEmitted (id) {
+      this.$emit('setMainSlide', id)
+    },
+    addSlide () {
+      this.$emit('addSlide')
+    }
+  }
+}
+</script>
+
+<style scoped>
+...
+</style>
+```
+
+Next, `Hello` needs to listen for this event, and add a new slide. The test is as follows:
+
+```
+import Vue from 'vue'
+import Hello from '@/components/Hello'
+
+describe('Hello.vue', () => {
+  it('should listen for a setMainSlide event and set the correct slide', () => {
+    //...
+  })
+
+  it('should add a new slide', () => {
+    const Component = Vue.extend(Hello)
+    const vm = new Component({
+      propsData: {
+        mainSlide: null
+      }
+    })
+
+    vm.store = {
+      slides: []
+    }
+
+    expect(vm.addSlide).to.be.a('function')
+
+    vm.addSlide()
+    vm.addSlide()
+
+    expect(vm.store.slides.length).to.equal(2)
+    expect(vm.store.slides[0].id).to.equal(1)
+    expect(vm.store.slides[1].id).to.equal(2)
+  })
+})
+```
+
+Fairly straight forward. Add two slides, asserts that the slide array has a length of 2, and `slide.id` is 0 and 1 respectively.
+
+The implementation is as follows \(a good exercise is to get this test to pass before looking, though\).
+
+```
+<template>
+  <div class="hello">
+    <SlideThumbnailContainer 
+      :slides="store.slides"  
+      @setMainSlide="setMainSlide"
+      @addSlide="addSlide"
+    />
+    <MainSlide :slide="mainSlide" v-if="mainSlide" />
+    {{ store.slides }}
+  </div>
+</template>
+
+<script>
+import SlideThumbnailContainer from '@/components/SlideThumbnailContainer'
+import MainSlide from '@/components/MainSlide'
+export default {
+  name: 'hello',
+  components: {
+    SlideThumbnailContainer,
+    MainSlide
+  },
+  data () {
+    return {
+      store: {
+        slides: [
+          { id: 0, title: 'Demo', content: 'This is a demo slide' },
+          { id: 1, title: 'Vue', content: 'Flux is a great way to manage your app' }
+        ]
+      },
+      mainSlide: null
+    }
+  },
+  methods: {
+    setMainSlide (id) {
+      this.mainSlide = this.store.slides.filter(s => s.id === id)[0]
+    },
+    addSlide () {
+      let _id = this.store.slides.length === 0 ? 1 : this.getNextId()
+      this.store.slides.push({
+        id: _id,
+        content: ''
+      })
+    },
+    getNextId () {
+      return Math.max(...this.store.slides.map(a => a.id)) + 1
+    }
+  }
+}
+</script>
+
+<style scoped>
+...
+</style>
+```
+
+There is a little bit of trickiness going on to get the id for the slide. If there is nothing in `store.slides`, we start at 1. Else, find the largest `id` and add one to it. 
 
 
 
