@@ -6,11 +6,11 @@ Vue.js \(from here on, Vue\) is a JavaScript framework created by and mantained 
 
 This book assumes basic knowledge of HTML, CSS and JavaScript. If you have some background in programming, it should be easy enough, even without much working knowledge in JavaScript.
 
-Let's get write into it. Each chapter will start by building a small applciation to demonstrate different features, and later build a clone of the popular programming news board, hacker news, complete with test driven development, and an NPM powered workflow.
+Let's get right into it. Each chapter, starting from chapter 2, will start by building a small applciations to demonstrate different features, such as a simple text editor, a Powerpoint-like slideshow program, complete with test driven development, and an NPM powered workflow.
 
 To get started, include Vue from a CDN, and create a simple HTML called `index.html` template to host the Vue app.
 
-```
+``` html
 <!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +22,6 @@ To get started, include Vue from a CDN, and create a simple HTML called `index.h
 </head>
 <body>
   <div id="app">
-
   </div>
 
   <script src="index.js"></script>
@@ -32,7 +31,7 @@ To get started, include Vue from a CDN, and create a simple HTML called `index.h
 
 Notice `<div id="app"></div>` on line 9? Vue apps are mounted on single HTML tag - usually a div like this. Line 6 includes the Vue itself, and line 11 includes the script which you should create in the same directory as `index.html`, called `index.js`. Then insert the following code to `index.js`:
 
-```
+``` js
 // index.js
 new Vue({
   el: '#app',
@@ -44,7 +43,7 @@ new Vue({
 })
 ```
 
-Now open `index.html` in a web browser and beyond.... nothing! However, to make sure everything is working okay, open the developer tools \(F12 on Windows; cmd + shift + c on macOS\) and you should see a message in the console that says:
+Now open `index.html` in a web browser and behold... nothing! However, to make sure everything is working okay, open the developer tools \(F12 on Windows; cmd + shift + c on macOS\) and confirm the following message appears in the console:
 
 > You are running Vue in development mode.
 >
@@ -52,7 +51,7 @@ Now open `index.html` in a web browser and beyond.... nothing! However, to make 
 >
 > See more tips at [https://vuejs.org/guide/deployment.html](https://vuejs.org/guide/deployment.html)
 
-This means everything _is_ working correctly! Great. Modify `index.html` and add the following
+This means everything _is_ working correctly! Great! Modify `index.html` and add the following
 
 ```
 <div id="app">
@@ -66,9 +65,9 @@ And refresh the page. You should see:
 
 So... _what happened here?_
 
-In a Vue app, anything between `{{ }}` will be _interpolated_ - replaced with relevant variable, function result, or expression.
+In a Vue app, JavaScript between `{{ }}` will be _interpolated_ - replaced with relevant variable, function result, or expression.
 
-Line 4 of the app uses one of the most frequently used of Vue's core functions - the `data` function. `data` should always return an object, which can contain variables that will be made directly available to the Vue instance which is attached to the app div. We then use `{{ }}` tags to display the message!
+Line 4 of the app uses one of the most frequently used of Vue's core APIs - the `data` function. `data` should always return an object, which can contain variables that will be made directly available on the Vue instance which is mounted in place of `<div id="app"></div>`. We then use `{{ }}` tags to display the message!
 
 ### 1.2 First look at a directive: v-model
 
@@ -82,22 +81,27 @@ Vue provides a number of build in _directives_ which you can use with regular HT
 </div>
 ```
 
-`index.js` stays the same. Try refreshing the page, and changing the value of the input field.
+`index.js` does not need to be changed. Refresh the page, and try changing the value of the input field.
 
 ![](/assets/import2.png)
 
-The `message` variable updates in sync with the content of the `<input />` tag. Pretty neat! This is one of Vue's strongest points; easy, two way binding between the UI and data.
+The `message` variable updates in sync with the content of the `<input />` tag. Pretty neat! This is one of Vue's most powerful features; reactive, two way binding between the UI and data.
 
 ### 1.3 Now you see me, now you don't: v-show and v-if
 
-`v-show` is another handy directive, that can be used to control the visibility of an element. Update using the following code:
+`v-show` is another useful directive that can be used to control the visibility of an element. Update `index.html` as follows:
 
 ```
 <!-- index.html -->
 <div id="app">
-  <input v-model="message" v-show="visible"/>
+  <input v-model="message" v-show="visible" />
   <input v-model="visible" type="checkbox" />
-  {{ message }}
+  <div>
+    {{ message }}
+  </div>
+  <div>
+    Visible: {{ visible }}
+  </div>
 </div>
 ```
 
@@ -118,21 +122,21 @@ Try clicking the checkbox - the `<input />` field should disappear! You can use 
 
 What is actually happening behind the scene when the element is hidden, is that the CSS is being set to `display: none;`. When `v-show` evaluates to false, the element is still rendered in the DOM, just not visible. You can verify this using your browser's developer tools and observing how the DOM changes when you toggle the checkbox.
 
-`v-if`
+Try placing `v-show` with `v-if`. The behavior is the same, however `v-if` and `v-show` are subtly different. `v-show` simply turns the element off by setting the style to hidden; the element is still in the DOM tree. `v-if`, however, completely removes the element. The use cases can be interchangable sometimes, but later on in this book there will be some times where one is more appropriate than the other, which I'll mention then.
 
 ### 1.4 Again and again: v-for
 
-Another heavily used directive is `v-for`, which is much like the for loop in most programming languages. But first we need an array of data to loop over! Update `index.js`.
+Another frequently used directive is `v-for`, which is much like the for loop in most programming languages. But first we need an array of data to loop over! Update `index.js`.
 
 ```
 // index.js
-  new Vue({
-    el: '#app',
-    data () {
+new Vue({
+  el: '#app',
+  data () {
     return {
       message: 'Hello Vue.js!',
       visible: true,
-      names: ['Lachlan', 'Chinami', 'Johnny']
+      names: ['Joey', 'Rachel', 'Ross']
     }
   }
 })
@@ -153,7 +157,12 @@ Vue has something very similar. Update `index.html`.
 <div id="app>
   <input v-model="message" v-show="visible"/>
   <input v-model="visible" type="checkbox" />
-  {{ message }}
+  <div>
+    {{ message }}
+  </div>
+  <div>
+    Visible: {{ visible }}
+  </div>
 
   <div v-for="name in names">
     {{ name }}
@@ -165,31 +174,41 @@ Refreshing the page should display all the names under the `<input />` from the 
 
 ### 1.5 Events: v-on
 
-Vue provides an API to react to various events, such as clicks, button presses, and so on: `v-on`. Let's see it action.
+Vue provides an API to react to various events, such as clicks, button presses, and so on: `v-on`. Let's see it action. First, update `index.html`:
 
-```
+``` html
 <!-- index.html -->
 <div id="app">
   <input v-model="message" v-show="visible"/>
   <input v-model="visible" type="checkbox" />
+  <div>
+    {{ message }}
+  </div>
+  <div>
+    Visible: {{ visible }}
+  </div>
+
   <button v-on:click="reverseNames">Reverse</button>
-  {{ message }}
 
   <div v-for="name in names">
     {{ name }}
   </div>
+  
+  <pre>
+    {{ $data }}
+  </pre>
 </div>
 ```
 
 `v-on` can be followed by a number of built in events, such as
 
-* click
+* click (used above)
 * mouseover
 * keyup
 * keydown
 * and many more
 
-You can also provide custom events, as we will see later. Using `v-on` also let's us introduce a new a new part of the Vue api: the `methods` object, which behaves much like the `data ()` object, but with functions.
+You can also provide custom events, as we will see later. Using `v-on` is a good opportunity to introduce another part of the Vue api: the `methods` object, which behaves much like the `data ()` object, but with functions.
 
 ```
 // index.js
@@ -199,7 +218,7 @@ new Vue({
     return {
       message: 'Hello Vue.js!',
       visible: true,
-      names: ['Lachlan', 'Chinami', 'Johnny']
+      names: ['Joey', 'Rachel', 'Ross']
     }
   }, 
   methods: {
@@ -210,6 +229,8 @@ new Vue({
 })
 ```
 
+Clicking the Reverse button should change the order of the names (both on the UI, and internally). Note the line `<pre>{{ $data }}</pre>` - this nicely formats and shows the `data` object. You can even observe the order of the array changing when you click Reverse. This can be a useful tool in debugging Vue apps.
+#
 ### 1.6: Bringing it all together: a todo app
 
 Armed with a few simple directives and a small part of the Vue api, we can now build our first application - a classic todo app. The app should:
@@ -218,28 +239,27 @@ Armed with a few simple directives and a small part of the Vue api, we can now b
 * Mark an item as complete
 * Delete an item
 
-```
+``` js
 new Vue({
   el '#app'
 })
 ```
 
-```
+``` html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title></title>
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.js"></script>
-</head>
-<body>
-<div id="app">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+    </div>
 
-</div>
-
-<script src="index.js"></script>
-</body>
+  <script src="index.js"></script>
+  </body>
 </html>
 ```
 
@@ -251,7 +271,7 @@ The next code block adds:
 2. a `data` object to hold a blank string for the item name, and an todos array
 3. a `methods` object, to house a method for adding a new todo item to the todos array
 
-```
+``` js
 // index.html
 new Vue({
   el: '#app',
@@ -272,7 +292,7 @@ new Vue({
 })
 ```
 
-```
+``` js
 // index.js
 <div id="app">
   <input v-model="todo" v-on:keydown.enter="addTodo" type="text" />
@@ -286,7 +306,7 @@ Now you should be able to type some text in the input and press enter to add it 
 
 Next let's add the ability to delete and complete items, finishing the core functionality.
 
-```
+``` js
 // index.js
 new Vue({
   el: '#app',
@@ -319,7 +339,7 @@ new Vue({
 })
 ```
 
-```
+``` html
 <!-- index.html -->
 <div id="app">
   <input v-model="todo" v-on:keydown.enter="addTodo" type="text" />
@@ -331,7 +351,7 @@ new Vue({
 </div>
 ```
 
-Only one extra line in `index.html`! Very concise. This listings adds two new methods, `findIndexById()`and `removeById()` . `findIndexById()` receives the index of the todo item and returns it's location in the `todos` array, and `removeById()` splices it out. The method is called in the same way the `addTodo()` method is called, using `v-on`. We also add a checkbox and bind it to the relevant todo's isDone property.
+Only one extra line in `index.html`! Very concise. This listings adds two new methods, `findIndexById()`and `removeById()` . `findIndexById()` receives the index of the todo item and returns its location in the `todos` array, and `removeById()` splices it out. The method is called in the same way the `addTodo()` method is called, using `v-on`. We also add a checkbox and bind it to the relevant todo's isDone property.
 
 One important thing to note is how an element is removed from an array in Vue, using the `Array.prototype.splice()` method. Due to JavaScript limitations, Vue cannot detect:
 
@@ -352,9 +372,9 @@ The last thing to do is to draw a line through completed todos, which introduces
 
 ### 1.7: Class binding
 
-Using the `v-bind` directive, it is possible to bind a `class` or `style` property to a variable or method. Firstly, make a new file, called `index.css` and include in in `index.html` like this:
+Using the `v-bind` directive, it is possible to bind a `class` or `style` property to a variable or method. Firstly, make a new file called `index.css`, and include it in `index.html` as follows:
 
-```
+``` css
 /* index.css */
 .completed {
   text-decoration: line-through;
@@ -363,33 +383,33 @@ Using the `v-bind` directive, it is possible to bind a `class` or `style` proper
 
 Now, any todo with with `class="completed"` will get a line through it. The final application looks as follows:
 
-```
+``` html
 <!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title></title>
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.js"></script>
-</head>
-<body>
-<div id="app">
-  <input v-model="todo" v-on:keydown.enter="addTodo" type="text" />
-  {{ todos }}
-  <div v-bind:class="todoStyle(todo.isDone)" v-for="todo in todos">
-    {{ todo.title }} <input type="checkbox" v-model="todo.isDone">
-    <button v-on:click="removeById(todo.id)">X</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.js"></script>
+  </head>
+  <body>
+  <div id="app">
+    <input v-model="todo" v-on:keydown.enter="addTodo" type="text" />
+    {{ todos }}
+    <div v-bind:class="todoStyle(todo.isDone)" v-for="todo in todos">
+      {{ todo.title }} <input type="checkbox" v-model="todo.isDone">
+      <button v-on:click="removeById(todo.id)">X</button>
+    </div>
   </div>
-</div>
 
-<link href="index.css" rel="stylesheet" />
-<script src="index.js"></script>
-</body>
+  <link href="index.css" rel="stylesheet" />
+  <script src="index.js"></script>
+  </body>
 </html>
 ```
 
-```
+``` js
 // index.js
 new Vue({
   el: '#app',
@@ -431,6 +451,10 @@ Note:
 
 `<div v-bind:class="todoStyle(todo.isDone)" v-for="todo in todos">` receives a function, `todoStyle()` and passes it the todo's `isDone` property, which `return "completed"` if `isDone` is true. Because `isDone` is reactive, when the checkbox is clicked, the class is updated, as well as the style. Pretty neat.
 
+Note:
+
+Some clever reads may notice that if you put a `console.log` into `todoStyle` and complete a todo, you will see `console.log` output once for _each_ todo in the array - not just the one that was completed. This is not optimal, and a better way to handle this kind of reactive change next chapter.
+
 ### 1.8 Keeping it concise: shorthand directives
 
 You may notice typing things like `v-bind:class` and `v-on:click` gets tiring and makes the code a little difficult to read. Thankfully, there is a better way.
@@ -438,5 +462,40 @@ You may notice typing things like `v-bind:class` and `v-on:click` gets tiring an
 * `v-bind` can be dropped, leaving `:class="todoStyle(todo.isDone)"`
 * `v-on` can be replaced with `@`, leaving `@click="removeById(todo.id)"`
 
-Much cleaner! From now on, all code snippets will use the shorthand.
+Much cleaner! From now on, all code snippets will use the shorthand. Updating `index.html` brings us to the end of the first chapter.
 
+``` html
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.js"></script>
+  </head>
+  <body>
+  <div id="app">
+    <input v-model="todo" @keydown.enter="addTodo" type="text" />
+    {{ todos }}
+    <div :class="todoStyle(todo.isDone)" v-for="todo in todos">
+      {{ todo.title }} <input type="checkbox" v-model="todo.isDone">
+      <button @click="removeById(todo.id)">X</button>
+    </div>
+  </div>
+
+  <link href="index.css" rel="stylesheet" />
+  <script src="index.js"></script>
+  </body>
+</html>
+```
+
+### 1.9: Summary
+* `v-model` is used to create two way binding
+* `v-show` and `v-if` is used to conditionally display elements
+* v-on listens to events
+* you can bind to classes and styles using `v-bind`
+* the Vue instance has `data` object, and the contents are automatically reactive
+* the contents of the `data` object can be interpolated using {{ }} tags
+* the `methods` object holds functions, which are available to the Vue instance and in the html through the {{ }} tags, like the `data` object
+* `@` is shorthand for `v-on`, and `:` is shorthand for `v-bind`
