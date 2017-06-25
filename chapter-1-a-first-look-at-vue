@@ -53,7 +53,7 @@ Now open `index.html` in a web browser and behold... nothing! However, to make s
 
 This means everything _is_ working correctly! Great! Modify `index.html` and add the following
 
-```
+``` js
 <div id="app">
   {{ message }}
 </div>
@@ -73,7 +73,7 @@ Line 4 of the app uses one of the most frequently used of Vue's core APIs - the 
 
 Vue provides a number of build in _directives_ which you can use with regular HTML \(or custom components, as explained later\) to achieve different results. Let's see one of the most common, `v-model` in action:
 
-```
+``` html
 <!-- index.html -->
 <div id="app">
   <input v-model="message" />
@@ -91,7 +91,7 @@ The `message` variable updates in sync with the content of the `<input />` tag. 
 
 `v-show` is another useful directive that can be used to control the visibility of an element. Update `index.html` as follows:
 
-```
+``` html
 <!-- index.html -->
 <div id="app">
   <input v-model="message" v-show="visible" />
@@ -105,7 +105,7 @@ The `message` variable updates in sync with the content of the `<input />` tag. 
 </div>
 ```
 
-```
+``` js
 // index.js
 new Vue({
   el: '#app',
@@ -128,7 +128,7 @@ Try placing `v-show` with `v-if`. The behavior is the same, however `v-if` and `
 
 Another frequently used directive is `v-for`, which is much like the for loop in most programming languages. But first we need an array of data to loop over! Update `index.js`.
 
-```
+``` js
 // index.js
 new Vue({
   el: '#app',
@@ -144,7 +144,7 @@ new Vue({
 
 Now we have some data to loop over. In regular JavaScript, it would be done something like this:
 
-```
+``` js
 for (let n in names) {
   console.log(names[n])
 }
@@ -152,7 +152,7 @@ for (let n in names) {
 
 Vue has something very similar. Update `index.html`.
 
-```
+``` html
 <!-- index.html -->
 <div id="app>
   <input v-model="message" v-show="visible"/>
@@ -210,7 +210,7 @@ Vue provides an API to react to various events, such as clicks, button presses, 
 
 You can also provide custom events, as we will see later. Using `v-on` is a good opportunity to introduce another part of the Vue api: the `methods` object, which behaves much like the `data ()` object, but with functions.
 
-```
+``` js
 // index.js
 new Vue({
   el: '#app',
@@ -272,7 +272,7 @@ The next code block adds:
 3. a `methods` object, to house a method for adding a new todo item to the todos array
 
 ``` js
-// index.html
+// index.js
 new Vue({
   el: '#app',
   data () {
@@ -292,8 +292,8 @@ new Vue({
 })
 ```
 
-``` js
-// index.js
+``` html
+// index.html
 <div id="app">
   <input v-model="todo" v-on:keydown.enter="addTodo" type="text" />
   {{ todos }}
