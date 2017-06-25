@@ -1077,7 +1077,11 @@ SlideThumbnailContainer.vue
 <template>
   <div class="container">
     Slides
-    <button @click="addSlide">Add Slide</button>
+    <button 
+      id="add-slide-button"
+      @click="addSlide">
+        Add Slide
+    </button>
     <SlideThumbnail 
        v-for="slide in slides" 
       :slide="slide" 
@@ -1207,5 +1211,54 @@ export default {
 
 There is a little bit of trickiness going on to get the id for the slide. If there is nothing in `store.slides`, we start at 1. Else, find the largest `id` and add one to it. 
 
+All the tests should be passing after running `npm run unit`. To finish this feature off, an integration test is in order. This one will test the full workflow - starting with a blank slideshow, the user should be able to click the "Add Slide" button, then click on the thumbnail, and update the text.
 
+```
+module.exports = {
+  'Clicking the add button adds a new slide': function (browser) {
+    const devServer = browser.globals.devServerURL
 
+    browser
+      .url(devServer)
+      .waitForElementVisible('#app', 5000)
+      .assert.elementNotPresent('.main.slide.container')
+      .click('#add-slide-button')
+      .click('.thumbnail')
+      .assert.elementPresent('.main.slide.container')
+      .setValue('#content', 'Some content')
+      .getText('.thumbnail', function (result) { 
+        this.assert.equal(result.value, 'Some content')
+       })
+  }
+}
+```
+
+Running `npm run e2e` yields a bunch of errors at this point. The output can be a bit verbose, but you should see something like this:
+
+```
+Running:  Clicking the add button adds a new slide
+ ✔ Element <#app> was visible after 88 milliseconds.
+ ✔ Testing if element <.main.slide.container> is not present.
+ ✔ Testing if element <.main.slide.container> is present.
+ ✖ Failed [equal]: ('This is a demo slideSome content' == 'Some content')  - expected "Some content" but got: "This is a demo slideSome content"
+    at Object.<anonymous> (/Users/lachlan/vuejs-book/chapter4/powerpoint/test/e2e/specs/AddANewSlide.js:14:21)
+```
+
+What is happening? A new slide is created, and when we do `click(.thumbnail)` it is actually selecting the first `<div>` with the thumbnail class, which is actually one of the hardcoded slides we set up earlier in `Hello`, since we had not functionality to add a slide. Now we do, however - so update `Hello.vue` to have the following store:
+
+```
+data () {
+  return {
+    store: {
+      slides: []
+    },
+    mainSlide: null
+  }
+}
+```
+
+The AddASlide test should now pass, but the original test we wrote, SetMainSlide, now fails - because there is no slide to set, since we removed the hardcoded ones from the store. All the functionality SetMainSlide was testing - the ability to click a thumbnail, then have `MadeSlide.vue` render it is now included in AddASlide, so we can delete SetMainSlide - it is no longer needed. Sometimes, refactoring or even deleting unnecessary code is as important as developing new features.
+
+Deleting SetMainSlide and running `npm run test` should execute all the unit and e2e tests, of which all should be passing.
+
+There you have it - a simple slideshow app, developing using unit and integration tests, which is maintainable and easily extendable. An additional feature which will be left as an exercise will be the ability to delete a slide. 
