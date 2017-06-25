@@ -10,7 +10,7 @@ Let's get write into it. Each chapter will start by building a small applciation
 
 To get started, include Vue from a CDN, and create a simple HTML called `index.html` template to host the Vue app.
 
-```
+``` html
 <!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +32,7 @@ To get started, include Vue from a CDN, and create a simple HTML called `index.h
 
 Notice `<div id="app"></div>` on line 9? Vue apps are mounted on single HTML tag - usually a div like this. Line 6 includes the Vue itself, and line 11 includes the script which you should create in the same directory as `index.html`, called `index.js`. Then insert the following code to `index.js`:
 
-```
+``` js
 // index.js
 new Vue({
   el: '#app',
